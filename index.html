@@ -182,7 +182,7 @@
         </div>
       </div>
     </section>
-<!-- Recent Members Section -->
+<!-- Recent Members Section (with soft ding + clearer active-dot + "just now" labels) -->
 <section class="joined-section">
   <div class="live-header">
     <h2>🎉 Recent Members Joined</h2>
@@ -202,9 +202,11 @@
   </div>
 
   <!-- Highlighted member (fades & slides in) -->
-  <div class="joined-fade">
+  <div class="joined-fade" id="joinedFade">
     <div class="member-card show" id="member1"></div>
     <div class="member-card" id="member2"></div>
+    <!-- confetti container -->
+    <div id="confettiContainer" aria-hidden="true"></div>
   </div>
 
   <!-- Join Streaks -->
@@ -275,8 +277,8 @@
     padding: 30px 20px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     position: relative;
-    height: 100px;
-    overflow: hidden;
+    height: 110px;
+    overflow: visible; /* allow confetti overflow */
   }
 
   .member-card {
@@ -294,13 +296,41 @@
     align-items: center;
     justify-content: center;
     gap: 12px;
+    padding: 8px;
   }
 
   .member-card img {
-    width: 40px;
-    height: 40px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     border: 2px solid white;
+    object-fit: cover;
+    background: white;
+  }
+
+  /* Emoji badge to emphasize African look */
+  .afro-emoji {
+    font-size: 22px;
+    margin-left: 6px;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.35));
+  }
+
+  /* Active dot (for current / 'just now') - stronger blink */
+  .active-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #00ff7f;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 12px #00ff7f, 0 0 20px rgba(0,255,127,0.25);
+    animation: activePulse 1s infinite;
+    vertical-align: middle;
+  }
+  @keyframes activePulse {
+    0% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px #00ff7f; }
+    50% { transform: scale(1.6); opacity: 0.6; box-shadow: 0 0 22px #00ff7f; }
+    100% { transform: scale(1); opacity: 1; box-shadow: 0 0 8px #00ff7f; }
   }
 
   .member-card.show {
@@ -313,6 +343,23 @@
     0% { text-shadow: 0 0 5px #fff, 0 0 10px #00e6ff; }
     50% { text-shadow: 0 0 15px #fff, 0 0 25px #00e6ff; }
     100% { text-shadow: 0 0 5px #fff, 0 0 10px #00e6ff; }
+  }
+
+  /* Confetti pieces */
+  #confettiContainer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .confetti {
+    position: absolute;
+    width: 9px;
+    height: 14px;
+    opacity: 0.95;
+    transform-origin: center;
+    will-change: transform, opacity;
+    border-radius: 2px;
   }
 
   /* Leaderboard Style */
@@ -348,13 +395,41 @@
     opacity: 0;
     transform: translateY(-10px);
     animation: slideIn 0.6s ease forwards;
+    position: relative;
   }
 
   .leaderboard img {
-    width: 25px;
-    height: 25px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: 1px solid white;
+    object-fit: cover;
+  }
+
+  .leaderboard li .entry-active-dot {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 12px;
+    height: 12px;
+    background: #00ff7f;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #00ff7f;
+    animation: activePulse 1s infinite;
+  }
+
+  .just-now-label {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    background: rgba(0,255,127,0.12);
+    color: #b8ffcf;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid rgba(0,255,127,0.18);
+    vertical-align: middle;
+    box-shadow: 0 0 8px rgba(0,255,127,0.08);
   }
 
   @keyframes slideIn {
@@ -366,11 +441,14 @@
 </style>
 
 <script>
-  // Configurable settings
-  const fadeDuration = 2;   // seconds
-  const displayTime = 8;    // seconds
+  /***** CONFIG: use AI photorealistic faces *****/
+  const avatarMode = 'thisperson'; // AI photorealistic faces
 
-  // Country list with flag emojis 🌍
+  // INTERACTION TIMINGS (seconds)
+  const fadeDuration = 2;   // fade time
+  const displayTime = 8;    // visible time per member
+
+  // Countries & flags
   const countries = [
     { name: "Ghana", flag: "🇬🇭" },
     { name: "Kenya", flag: "🇰🇪" },
@@ -380,111 +458,285 @@
     { name: "Cameroon", flag: "🇨🇲" }
   ];
 
+  // helper: deterministic seed -> int
+  function seedToInt(seed) {
+    let h = 2166136261 >>> 0;
+    for (let i = 0; i < seed.length; i++) {
+      h ^= seed.charCodeAt(i);
+      h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+    }
+    return (h >>> 0) % 100000;
+  }
+
+  // return realistic avatar url
+  function realAvatar(seed, country, size = 256) {
+    const sig = seedToInt(seed);
+    if (avatarMode === 'thisperson') {
+      return `https://thispersondoesnotexist.com/image?${sig}`;
+    } else {
+      const q = encodeURIComponent(`${country} portrait face person african`);
+      return `https://source.unsplash.com/random/${size}x${size}?${q}&sig=${sig}`;
+    }
+  }
+
+  // fallback handler for img elements
+  function applyImageFallback(imgEl, preferred = avatarMode) {
+    imgEl.addEventListener('error', function handler() {
+      imgEl.removeEventListener('error', handler);
+      if (preferred === 'unsplash') {
+        // fallback to AI-generated face
+        imgEl.src = `https://thispersondoesnotexist.com/image?fallback=${Date.now()}`;
+      } else {
+        // fallback tiny placeholder
+        imgEl.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128"><rect width="100%" height="100%" fill="%23ddd"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23666" font-size="14">avatar</text></svg>';
+      }
+    });
+  }
+
+  // Generate ID like ******1234
   function generateId() {
     return "******" + Math.floor(1000 + Math.random() * 9000);
   }
 
-  function getTimeAgo(i) {
-    if (i === 0) return "just now";
-    return i + " min ago";
-  }
-
-  // Generate random members
+  // Create members array (photorealistic avatars)
+  const africanNames = ["Kwame","Amina","Kofi","Nia","Chinua","Fatou","Tendai","Zainab","Ife","Amara","Sifa","Musa"];
   const members = [];
   for (let i = 0; i < 50; i++) {
     const c = countries[Math.floor(Math.random() * countries.length)];
+    const name = africanNames[i % africanNames.length] + Math.floor(Math.random()*100);
+    const id = generateId();
+    const seed = `${c.name}-${name}-${id}`;
     members.push({
-      id: generateId(),
+      id,
+      displayName: name,
       country: c.name,
       flag: c.flag,
-      avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`,
-      time: getTimeAgo(Math.floor(Math.random() * 10))
+      avatar: realAvatar(seed, c.name, 256),
+      time: 'a few mins ago' // initial generic time; will be 'just now' when highlighted
     });
   }
 
-  let index = 0;
-  let active = 1;
-  let totalCount = 0;
-  let countryCounts = {};
-  let recentJoins = [];
-
+  // Elements
   const member1 = document.getElementById("member1");
   const member2 = document.getElementById("member2");
   const leaderboardList = document.getElementById("leaderboardList");
   const totalCountEl = document.getElementById("totalCount");
   const hotCountryEl = document.getElementById("hotCountry");
   const joinStreakEl = document.getElementById("joinStreak");
+  const confettiContainer = document.getElementById("confettiContainer");
 
-  // Apply fade duration to CSS variable
-  document.querySelectorAll(".member-card").forEach(el => {
-    el.style.setProperty("--fade-time", fadeDuration + "s");
-  });
+  // State
+  let index = 0;
+  let active = 1;
+  let totalCount = 0;
+  const countryCounts = {};
+  const recentCountries = [];
 
-  function renderMember(el, data) {
+  // Apply fade duration as CSS var
+  document.querySelectorAll(".member-card").forEach(el => el.style.setProperty("--fade-time", fadeDuration + "s"));
+
+  // Render member into highlight card. isActive true -> show active-dot + "just now"
+  function renderMember(el, data, isActive = false) {
     el.innerHTML = `
       <img src="${data.avatar}" alt="avatar">
-      <span>${data.id} from ${data.country} ${data.flag} <small>(${data.time})</small></span>
+      <div style="text-align:left;">
+        <div style="font-size:16px; font-weight:700;">
+          ${ isActive ? '<span class="active-dot"></span>' : '' }
+          ${data.displayName} <span class="afro-emoji">🧑🏿‍🦱</span>
+          ${ isActive ? '<span class="just-now-label">Just now</span>' : '' }
+        </div>
+        <div style="font-size:13px; font-weight:600; opacity:0.9;">${data.id} • ${data.country} ${data.flag} <small style="font-weight:400; opacity:0.85">(${data.time})</small></div>
+      </div>
     `;
+    // add fallback handler for avatar img
+    const img = el.querySelector('img');
+    if (img) applyImageFallback(img);
   }
 
-  // Initialize first
-  renderMember(member1, members[index]);
-  member1.classList.add("show");
+  // confetti burst
+  function confettiBurst(count = 28, originX = 50, originY = 15) {
+    const colors = ["#FF5A5F","#FFD166","#06D6A0","#118AB2","#8338EC","#FF7AB6"];
+    const rect = confettiContainer.getBoundingClientRect();
+    for (let i = 0; i < count; i++) {
+      const piece = document.createElement("div");
+      piece.className = "confetti";
+      piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+      const startX = (originX/100) * rect.width + (Math.random()*40-20);
+      const startY = (originY/100) * rect.height + (Math.random()*10-5);
+      piece.style.left = `${startX}px`;
+      piece.style.top = `${startY}px`;
+      const rot = Math.random()*360;
+      const sx = 0.8 + Math.random()*0.8;
+      const duration = 900 + Math.random()*900;
+      piece.style.transform = `rotate(${rot}deg) scale(${sx})`;
+      confettiContainer.appendChild(piece);
 
+      const dx = (Math.random()*200 - 100);
+      const dy = 220 + Math.random()*180;
+      const dr = (Math.random()*720 - 360);
+      piece.animate([
+        { transform: `translate(0px,0px) rotate(${rot}deg)`, opacity: 1 },
+        { transform: `translate(${dx}px, ${dy}px) rotate(${rot + dr}deg)`, opacity: 0 }
+      ], {
+        duration,
+        easing: 'cubic-bezier(.16,.84,.52,1)',
+        iterations: 1,
+        fill: 'forwards'
+      });
+
+      setTimeout(() => {
+        try { confettiContainer.removeChild(piece); } catch(e) {}
+      }, duration + 60);
+    }
+  }
+
+  // soft ding using Web Audio API
+  function playDing() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(880, ctx.currentTime); // start frequency
+      o.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.18); // down-sweep
+      g.gain.setValueAtTime(0, ctx.currentTime);
+      g.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      o.connect(g);
+      g.connect(ctx.destination);
+      o.start();
+      setTimeout(() => { o.stop(); ctx.close().catch(()=>{}); }, 600);
+    } catch (e) {
+      // ignore if audio not available
+      console.warn('Audio not supported', e);
+    }
+  }
+
+  // smooth number animate helper
+  function animateNumber(el, to) {
+    const from = parseInt(el.textContent.replace(/,/g,'')) || 0;
+    const duration = 700;
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - start)/duration);
+      const val = Math.floor(from + (to - from) * easeOutCubic(t));
+      el.textContent = val.toLocaleString();
+      if (t < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+  }
+
+  // update stats when a new member joins
   function updateStats(data) {
-    // Update total counter
+    // total
     totalCount++;
-    totalCountEl.textContent = totalCount;
+    animateNumber(totalCountEl, totalCount);
 
-    // Update country counts
+    // country counts
     countryCounts[data.country] = (countryCounts[data.country] || 0) + 1;
-    let hottest = Object.entries(countryCounts).sort((a,b) => b[1]-a[1])[0];
-    hotCountryEl.textContent = hottest[0] + " " + countries.find(c => c.name === hottest[0]).flag;
+    const hottest = Object.entries(countryCounts).sort((a,b)=>b[1]-a[1])[0];
+    if (hottest) {
+      hotCountryEl.textContent = `${countries.find(c=>c.name===hottest[0]).flag} ${hottest[0]} (${hottest[1]})`;
+    }
 
-    // Update streaks
-    recentJoins.push(data.country);
-    if (recentJoins.length > 5) recentJoins.shift();
-    let streakCountry = recentJoins[0];
-    let streakCount = recentJoins.filter(c => c === streakCountry).length;
-    joinStreakEl.textContent = streakCount > 1 ? 
-      `${streakCount} people from ${streakCountry} joined recently!` : 
-      `Last join: ${data.country}`;
+    // streaks (recent sequence)
+    recentCountries.push(data.country);
+    if (recentCountries.length > 6) recentCountries.shift();
+    const last = recentCountries[recentCountries.length-1];
+    let streak = 0;
+    for (let i = recentCountries.length-1; i >= 0; i--) {
+      if (recentCountries[i] === last) streak++; else break;
+    }
+    if (streak > 1) {
+      joinStreakEl.textContent = `${streak} people from ${last} joined in a row!`;
+    } else {
+      joinStreakEl.textContent = `Last join: ${data.country} ${data.flag}`;
+    }
   }
+
+  // push new item to leaderboard; mark top item as active (clear previous)
+  function pushLeaderboard(next) {
+    // clear previous active markers & just-now labels
+    Array.from(leaderboardList.children).forEach(li => {
+      li.classList.remove('active-entry');
+      const dot = li.querySelector('.entry-active-dot');
+      if (dot) dot.remove();
+      const label = li.querySelector('.just-now-label');
+      if (label) label.remove();
+    });
+
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <img src="${next.avatar}" alt="avatar">
+      ${next.displayName} - ${next.flag} ${next.country} <small style="opacity:0.8">(${next.time})</small>
+    `;
+    // attach fallback to leaderboard image
+    const img = li.querySelector('img');
+    if (img) applyImageFallback(img);
+
+    // add active indicator + just-now label to top entry
+    const activeDot = document.createElement('span');
+    activeDot.className = 'entry-active-dot';
+    li.appendChild(activeDot);
+    const justNow = document.createElement('span');
+    justNow.className = 'just-now-label';
+    justNow.textContent = 'Just now';
+    li.querySelector('small').after(justNow);
+
+    li.classList.add('active-entry');
+    leaderboardList.insertBefore(li, leaderboardList.firstChild);
+    while (leaderboardList.children.length > 5) {
+      leaderboardList.removeChild(leaderboardList.lastChild);
+    }
+  }
+
+  // Initialize first: mark initial as just now / active
+  members[index].time = 'just now';
+  renderMember(member1, members[index], true);
+  member1.classList.add("show");
+  updateStats(members[index]);
+  pushLeaderboard(members[index]);
+  confettiBurst(28, 50, 15);
+  playDing();
 
   function showNextMember() {
+    // convert previous 'just now' entries to 'a few mins ago'
+    members.forEach(m => { if (m.time === 'just now') m.time = 'a few mins ago'; });
+
     index = (index + 1) % members.length;
-    const nextData = members[index];
-    
-    // Highlight update (crossfade)
+    const next = members[index];
+    next.time = 'just now'; // mark current as just now
+
+    // crossfade highlight (pass isActive=true to renderMember)
     if (active === 1) {
-      renderMember(member2, nextData);
+      renderMember(member2, next, true);
       member2.classList.add("show");
       member1.classList.remove("show");
       active = 2;
     } else {
-      renderMember(member1, nextData);
+      renderMember(member1, next, true);
       member1.classList.add("show");
       member2.classList.remove("show");
       active = 1;
     }
 
-    // Leaderboard update
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <img src="${nextData.avatar}" alt="avatar">
-      ${nextData.id} - ${nextData.flag} ${nextData.country} <small>(${nextData.time})</small>
-    `;
-    leaderboardList.insertBefore(li, leaderboardList.firstChild);
-    while (leaderboardList.children.length > 5) {
-      leaderboardList.removeChild(leaderboardList.lastChild);
-    }
+    // leaderboard push (automatically marks top as active)
+    pushLeaderboard(next);
 
-    // Stats update
-    updateStats(nextData);
+    // stats + confetti + ding
+    updateStats(next);
+    confettiBurst(28, 50, 15);
+    playDing();
   }
 
-  // Interval = display time + fade time
+  // Start cycling
   setInterval(showNextMember, (displayTime + fadeDuration) * 1000);
+
+  // Attach fallback handlers for any existing imgs on load (safety)
+  setTimeout(() => {
+    document.querySelectorAll('.member-card img, .leaderboard img').forEach(img => applyImageFallback(img));
+  }, 500);
 </script>
 
 

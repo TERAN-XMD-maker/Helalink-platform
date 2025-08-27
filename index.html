@@ -182,6 +182,311 @@
         </div>
       </div>
     </section>
+<!-- Recent Members Section -->
+<section class="joined-section">
+  <div class="live-header">
+    <h2>🎉 Recent Members Joined</h2>
+    <div class="live-status">
+      <span class="dot"></span> Live feed active now
+    </div>
+  </div>
+
+  <!-- Total Counter -->
+  <div class="total-counter">
+    🔢 Total Members: <span id="totalCount">0</span>
+  </div>
+
+  <!-- Hot Country -->
+  <div class="hot-country">
+    🌍🔥 Hottest Country Today: <span id="hotCountry">Loading...</span>
+  </div>
+
+  <!-- Highlighted member (fades & slides in) -->
+  <div class="joined-fade">
+    <div class="member-card show" id="member1"></div>
+    <div class="member-card" id="member2"></div>
+  </div>
+
+  <!-- Join Streaks -->
+  <div class="join-streaks">
+    📈 <span id="joinStreak">No streak yet...</span>
+  </div>
+
+  <!-- Leaderboard style (Top 5 recent members list) -->
+  <div class="leaderboard">
+    <h3>👥 Top 5 Recent Joins</h3>
+    <ul id="leaderboardList"></ul>
+  </div>
+</section>
+
+<style>
+  .joined-section {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 20px;
+    margin: 40px auto;
+    max-width: 700px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  .live-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .live-status {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    background: limegreen;
+    border-radius: 50%;
+    box-shadow: 0 0 10px limegreen;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .total-counter, .hot-country, .join-streaks {
+    margin: 15px 0;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+  }
+
+  /* Highlighted Member */
+  .joined-fade {
+    max-width: 500px;
+    margin: 20px auto 30px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    position: relative;
+    height: 100px;
+    overflow: hidden;
+  }
+
+  .member-card {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    font-size: 18px;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--fade-time, 2s) ease-in-out, 
+                transform var(--fade-time, 2s) ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .member-card img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+
+  .member-card.show {
+    opacity: 1;
+    transform: translateY(0);
+    animation: glowPulse 3s infinite;
+  }
+
+  @keyframes glowPulse {
+    0% { text-shadow: 0 0 5px #fff, 0 0 10px #00e6ff; }
+    50% { text-shadow: 0 0 15px #fff, 0 0 25px #00e6ff; }
+    100% { text-shadow: 0 0 5px #fff, 0 0 10px #00e6ff; }
+  }
+
+  /* Leaderboard Style */
+  .leaderboard {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  }
+
+  .leaderboard h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .leaderboard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .leaderboard li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: slideIn 0.6s ease forwards;
+  }
+
+  .leaderboard img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 1px solid white;
+  }
+
+  @keyframes slideIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  // Configurable settings
+  const fadeDuration = 2;   // seconds
+  const displayTime = 8;    // seconds
+
+  // Country list with flag emojis 🌍
+  const countries = [
+    { name: "Ghana", flag: "🇬🇭" },
+    { name: "Kenya", flag: "🇰🇪" },
+    { name: "Uganda", flag: "🇺🇬" },
+    { name: "Botswana", flag: "🇧🇼" },
+    { name: "Malawi", flag: "🇲🇼" },
+    { name: "Cameroon", flag: "🇨🇲" }
+  ];
+
+  function generateId() {
+    return "******" + Math.floor(1000 + Math.random() * 9000);
+  }
+
+  function getTimeAgo(i) {
+    if (i === 0) return "just now";
+    return i + " min ago";
+  }
+
+  // Generate random members
+  const members = [];
+  for (let i = 0; i < 50; i++) {
+    const c = countries[Math.floor(Math.random() * countries.length)];
+    members.push({
+      id: generateId(),
+      country: c.name,
+      flag: c.flag,
+      avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`,
+      time: getTimeAgo(Math.floor(Math.random() * 10))
+    });
+  }
+
+  let index = 0;
+  let active = 1;
+  let totalCount = 0;
+  let countryCounts = {};
+  let recentJoins = [];
+
+  const member1 = document.getElementById("member1");
+  const member2 = document.getElementById("member2");
+  const leaderboardList = document.getElementById("leaderboardList");
+  const totalCountEl = document.getElementById("totalCount");
+  const hotCountryEl = document.getElementById("hotCountry");
+  const joinStreakEl = document.getElementById("joinStreak");
+
+  // Apply fade duration to CSS variable
+  document.querySelectorAll(".member-card").forEach(el => {
+    el.style.setProperty("--fade-time", fadeDuration + "s");
+  });
+
+  function renderMember(el, data) {
+    el.innerHTML = `
+      <img src="${data.avatar}" alt="avatar">
+      <span>${data.id} from ${data.country} ${data.flag} <small>(${data.time})</small></span>
+    `;
+  }
+
+  // Initialize first
+  renderMember(member1, members[index]);
+  member1.classList.add("show");
+
+  function updateStats(data) {
+    // Update total counter
+    totalCount++;
+    totalCountEl.textContent = totalCount;
+
+    // Update country counts
+    countryCounts[data.country] = (countryCounts[data.country] || 0) + 1;
+    let hottest = Object.entries(countryCounts).sort((a,b) => b[1]-a[1])[0];
+    hotCountryEl.textContent = hottest[0] + " " + countries.find(c => c.name === hottest[0]).flag;
+
+    // Update streaks
+    recentJoins.push(data.country);
+    if (recentJoins.length > 5) recentJoins.shift();
+    let streakCountry = recentJoins[0];
+    let streakCount = recentJoins.filter(c => c === streakCountry).length;
+    joinStreakEl.textContent = streakCount > 1 ? 
+      `${streakCount} people from ${streakCountry} joined recently!` : 
+      `Last join: ${data.country}`;
+  }
+
+  function showNextMember() {
+    index = (index + 1) % members.length;
+    const nextData = members[index];
+    
+    // Highlight update (crossfade)
+    if (active === 1) {
+      renderMember(member2, nextData);
+      member2.classList.add("show");
+      member1.classList.remove("show");
+      active = 2;
+    } else {
+      renderMember(member1, nextData);
+      member1.classList.add("show");
+      member2.classList.remove("show");
+      active = 1;
+    }
+
+    // Leaderboard update
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <img src="${nextData.avatar}" alt="avatar">
+      ${nextData.id} - ${nextData.flag} ${nextData.country} <small>(${nextData.time})</small>
+    `;
+    leaderboardList.insertBefore(li, leaderboardList.firstChild);
+    while (leaderboardList.children.length > 5) {
+      leaderboardList.removeChild(leaderboardList.lastChild);
+    }
+
+    // Stats update
+    updateStats(nextData);
+  }
+
+  // Interval = display time + fade time
+  setInterval(showNextMember, (displayTime + fadeDuration) * 1000);
+</script>
+
 
     <!-- Notification Section: Browser + Signal subscribe -->
     <section class="notify" role="region" aria-label="Launch reminders">

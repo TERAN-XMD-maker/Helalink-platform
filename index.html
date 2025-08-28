@@ -624,5 +624,26 @@
 
     }); // DOMContentLoaded
   </script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(reg => {
+      console.log('SW registered:', reg);
+    }).catch(err => {
+      console.warn('SW registration failed:', err);
+    });
+
+  // Listen for messages from SW (e.g. navigate or resubscribe)
+  navigator.serviceWorker.addEventListener('message', evt => {
+    const msg = evt.data || {};
+    if (msg.type === 'navigate' && msg.url) {
+      // Safely navigate
+      window.location.href = msg.url;
+    } else if (msg.type === 'resubscribe') {
+      // Re-subscribe user to push and send subscription to server
+      // implement your subscribeToPush() here
+      console.log('SW asked to resubscribe — implement subscribeToPush()');
+    }
+  });
+}
 </body>
 </html>

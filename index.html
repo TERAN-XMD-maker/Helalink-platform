@@ -21,10 +21,15 @@
     /* Please note: full styles are included in the delivered file below. */
   </style>
 
-  <!-- OneSignal: Add SDK script and init.
-       IMPORTANT:
-       1) Upload OneSignalSDKWorker.js & OneSignalSDKUpdaterWorker.js to your site root.
-       2) Keep the same appId below (you provided it earlier). -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "7812cafe-fa18-4b12-ac47-f95f2ce4077f",
+    });
+  });
+</script>
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
     window.OneSignal = window.OneSignal || [];

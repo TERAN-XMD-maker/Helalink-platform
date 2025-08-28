@@ -595,31 +595,69 @@
         });
       }
 
-      /***** Browser Reminders button (PushAlert) *****/
-      const notifyBtn = document.getElementById('notifyBtn');
-      if(notifyBtn){
-        notifyBtn.addEventListener('click', ()=>{
-          try {
-            // PushAlert integration exposes different globals depending on version
-            if (window.PushAlertCo && typeof PushAlertCo.subscriptionPopup === 'function') {
-              PushAlertCo.subscriptionPopup();
-              document.getElementById('subBadge').style.display = 'inline-block';
-              showToast('Browser reminders: permission prompt opened (check browser).');
-            } else if (window.pushalert && typeof window.pushalert.subscribe === 'function') {
-              window.pushalert.subscribe();
-              document.getElementById('subBadge').style.display = 'inline-block';
-              showToast('Browser reminders: permission prompt opened (check browser).');
-            } else {
-              // fallback: the external script is still loading or blocked
-              showToast('If the browser prompt doesn\'t appear, ensure notifications are allowed for this site.');
-            }
-          } catch(err){
-            console.warn('PushAlert subscribe error', err);
-            showToast('Could not open browser permission prompt. Check console for details.');
-          }
-        });
-      }
+      // Replace your existing notifyBtn event listener with this:
 
+const notifyBtn = document.getElementById('notifyBtn');
+if(notifyBtn){
+  notifyBtn.addEventListener('click', ()=>{
+    console.log('Notification button clicked');
+    
+    // Method 1: Try PushAlert v3 API
+    if (window.PushAlert && typeof window.PushAlert.subscribe === 'function') {
+      console.log('Using PushAlert.subscribe');
+      window.PushAlert.subscribe();
+      document.getElementById('subBadge').style.display = 'inline-block';
+      showToast('Browser reminders: permission prompt opened.');
+      return;
+    }
+    
+    // Method 2: Try older PushAlert API
+    if (window.PushAlertCo && typeof window.PushAlertCo.subscriptionPopup === 'function') {
+      console.log('Using PushAlertCo.subscriptionPopup');
+      window.PushAlertCo.subscriptionPopup();
+      document.getElementById('subBadge').style.display = 'inline-block';
+      showToast('Browser reminders: permission prompt opened.');
+      return;
+    }
+    
+    // Method 3: Try direct pushalert object
+    if (window.pushalert && typeof window.pushalert.subscribe === 'function') {
+      console.log('Using pushalert.subscribe');
+      window.pushalert.subscribe();
+      document.getElementById('subBadge').style.display = 'inline-block';
+      showToast('Browser reminders: permission prompt opened.');
+      return;
+    }
+    
+    // Method 4: Fallback to native browser notifications
+    if ('Notification' in window) {
+      console.log('Using native Notification API');
+      Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+          document.getElementById('subBadge').style.display = 'inline-block';
+          showToast('Browser notifications enabled! (Using native API)');
+        } else {
+          showToast('Notification permission denied.');
+        }
+      });
+      return;
+    }
+    
+    // If nothing works
+    console.error('No notification methods available');
+    showToast('Push notifications not supported in this browser.');
+  });
+}
+
+// Add this debug function to check what's available (put in console)
+function debugPushAlert() {
+  console.log('=== PushAlert Debug ===');
+  console.log('window.PushAlert:', window.PushAlert);
+  console.log('window.PushAlertCo:', window.PushAlertCo);
+  console.log('window.pushalert:', window.pushalert);
+  console.log('Notification support:', 'Notification' in window);
+  console.log('Service Worker support:', 'serviceWorker' in navigator);
+}
       /***** Toast helper already available above *****/
 
     }); // DOMContentLoaded

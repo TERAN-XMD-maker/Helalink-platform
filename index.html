@@ -127,8 +127,16 @@
     @keyframes slideIn { to { opacity:1; transform:translateY(0); } }
   </style>
 
-  <!-- PushAlert loader (async). Keep origin trusted and update src to your integration key -->
-  <script async src="https://cdn.pushalert.co/integrate_f8875402a4aca47d9757f70a9b7f7dd4.js" id="pushalert-script"></script>
+  <!-- PushAlert -->
+  <script type="text/javascript">
+    (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = "https://cdn.pushalert.co/integrate_f8875402a4aca47d9757f70a9b7f7dd4.js";
+      s.parentNode.insertBefore(g, s);
+    }(document, "script"));
+  </script>
+  <!-- End PushAlert -->
 </head>
 <body>
   <div class="page">

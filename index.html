@@ -121,6 +121,54 @@
 
   </style>
 </head>
+  </style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 1em;
+      text-align: center;
+    }
+    main {
+      padding: 2em;
+      text-align: center;
+    }
+    button {
+      background: #007bff;
+      color: #fff;
+      padding: 0.8em 1.5em;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+
+  <!-- PushAlert -->
+  <script type="text/javascript">
+  (function(d, t) {
+      var g = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      g.src = "https://cdn.pushalert.co/integrate_f8875402a4aca47d9757f70a9b7f7dd4.js";
+      g.onload = function() {
+          // Auto-prompt once PushAlert script is ready
+          if (typeof PushAlertCo !== "undefined") {
+              PushAlertCo.subscriptionPopup();
+          }
+      };
+      s.parentNode.insertBefore(g, s);
+  }(document, "script"));
+  </script>
+  <!-- End PushAlert -->
 <body>
   <div class="page">
     <section class="hero">
@@ -894,110 +942,5 @@
       const toastEl = document.getElementById('toast');
       let toastTimer = null;
       function showToast(msg, ms=4200){ toastEl.textContent = msg; toastEl.style.display = 'block'; clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ toastEl.style.display='none'; }, ms); }
-
-      /* =============================================
-         PUSH SUBSCRIPTION LOGIC — edit only these:
-         - Set BACKEND_URL below to your Render backend URL
-         ============================================= */
-      const BACKEND_URL = "https://backend-1-93pm.onrender.com"; // <<-- REPLACE with your backend URL (no trailing slash)
-
-      async function getPublicVapidKey() {
-        try {
-          const res = await fetch(BACKEND_URL + '/vapidPublic');
-          if (!res.ok) throw new Error('Failed to fetch VAPID key');
-          const json = await res.json();
-          return json.publicKey;
-        } catch (err) {
-          console.error('getPublicVapidKey error', err);
-          showToast('Cannot reach backend for VAPID key. Check BACKEND_URL.');
-          throw err;
-        }
-      }
-
-      function urlBase64ToUint8Array(base64String) {
-        const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-        const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
-        const rawData = window.atob(base64);
-        return Uint8Array.from([...rawData].map((c) => c.charCodeAt(0)));
-      }
-
-      async function subscribeForPush() {
-        if (!("serviceWorker" in navigator)) {
-          showToast("Service workers not supported in this browser.");
-          return;
-        }
-        try {
-          const reg = await navigator.serviceWorker.register("/sw.js");
-          // request permission
-          const permission = await Notification.requestPermission();
-          if (permission !== "granted") {
-            showToast("You denied notifications. Try Signal instead.");
-            return;
-          }
-
-          const publicKey = await getPublicVapidKey();
-          const sub = await reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array(publicKey),
-          });
-
-          // send to backend
-          const res = await fetch(BACKEND_URL + "/subscribe", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(sub),
-          });
-
-          if (res.ok) {
-            localStorage.setItem("helalink_push_subscribed", "1");
-            document.getElementById("subBadge").style.display = "inline-block";
-            showToast("Subscribed — you'll receive daily launch reminders.");
-          } else {
-            showToast("Subscription failed on server. Check backend logs.");
-          }
-        } catch (err) {
-          console.error("subscribeForPush error:", err);
-          showToast("Subscription failed. See console for details.");
-        }
-      }
-
-      // Hook the Browser Reminders button
-      document.getElementById("notifyBtn").addEventListener("click", async () => {
-        await subscribeForPush();
-      });
-
-      // If already marked subscribed in localStorage, show badge
-      if (localStorage.getItem("helalink_push_subscribed")) {
-        document.getElementById("subBadge").style.display = "inline-block";
-      }
-
-      /* =============================================
-         Existing notification scheduling in-page left as-is.
-         Your backend + BetterStack cron will send push notifications.
-         ============================================= */
-
-      // Notifications scheduler (unchanged)
-      const notifyBtn = document.getElementById('notifyBtn');
-      const subBadge = document.getElementById('subBadge');
-      const LS_KEY = 'helalink_notify_sub';
-      let dailyInterval = null; let scheduledTimers = [];
-      function updateBadge(){ if(localStorage.getItem('helalink_signal_sub') || Notification.permission === 'granted' || localStorage.getItem(LS_KEY) === 'granted'){ subBadge.style.display = 'inline-block'; } else { subBadge.style.display = 'none'; } }
-      const persuasiveLines = [ 'Secure your spot: complete your activation to unlock priority onboarding & exclusive launch bonuses! 🔥', 'Only a few priority slots left — activate now to guarantee your bonus and fast-tracked onboarding! ⏳', 'Reminder: complete activation to claim your launch bonus and early payouts — don\'t miss out!', 'Helalink tip: activate today and get priority coaching + bonus credit during launch. Limited offer!' ];
-      function scheduleOneDayAndFinalAlerts(){ scheduledTimers.forEach(id=>clearTimeout(id)); scheduledTimers = []; if(Notification.permission !== 'granted') return; const now = Date.now(); const launchTs = new Date('2025-09-13T00:00:00').getTime(); const oneDayBefore = launchTs - 24*60*60*1000; const oneHourBefore = launchTs - 60*60*1000; if(oneDayBefore > now){ const id1 = setTimeout(()=>{ try{ new Notification('Helalink — 24 hours to launch', {body: persuasiveLines[0]}); }catch(e){} showToast('24-hour countdown: ' + persuasiveLines[0]); startLastDayInterval(); }, oneDayBefore - now); scheduledTimers.push(id1); } else { try{ new Notification('Helalink — Less than 24 hours to launch', {body: persuasiveLines[0]}); }catch(e){} showToast('Less than 24 hours: ' + persuasiveLines[0]); startLastDayInterval(); } if(oneHourBefore > now){ const id2 = setTimeout(()=>{ try{ new Notification('Helalink — 1 hour to launch', {body: persuasiveLines[1]}); }catch(e){}; showToast('1 hour to launch: ' + persuasiveLines[1]); }, oneHourBefore - now); scheduledTimers.push(id2); } if(launchTs > now){ const id3 = setTimeout(()=>{ try{ new Notification('Helalink is Live!', {body: 'We are live — join now to claim your bonus.'}); }catch(e){}; showToast('Helalink is Live!'); }, launchTs - now); scheduledTimers.push(id3); } }
-      function startLastDayInterval(){ if(dailyInterval) clearInterval(dailyInterval); dailyInterval = setInterval(()=>{ const idx = Math.floor(Math.random()*persuasiveLines.length); const msg = persuasiveLines[idx]; try{ new Notification('Helalink Reminder', {body: msg}); }catch(e){} showToast(msg, 6000); }, 6*60*60*1000); }
-      notifyBtn.addEventListener('click', async ()=>{ if(!('Notification' in window)){ showToast('Browser notifications are not supported in this environment.'); return; } try{ const p = await Notification.requestPermission(); localStorage.setItem(LS_KEY, p); if(p === 'granted'){ showToast('Browser reminders active — you will receive a 24-hour countdown alert and final reminders.'); try{ new Notification('Helalink reminders active', {body: 'You will receive the 24-hour countdown and final launch reminders.'}); }catch(e){} updateBadge(); scheduleOneDayAndFinalAlerts(); } else if(p === 'denied'){ showToast('You denied browser reminders — try Signal for manual reminders.'); updateBadge(); } else { showToast('Permission closed. If you change your mind, press Browser Reminders again.'); updateBadge(); } }catch(e){ console.error(e); showToast('Permission request failed.'); } });
-      if(localStorage.getItem(LS_KEY) === 'granted' || Notification.permission === 'granted'){ scheduleOneDayAndFinalAlerts(); updateBadge(); }
-      if(localStorage.getItem('helalink_signal_sub')) updateBadge();
-      window.addEventListener('beforeunload', ()=>{ if(dailyInterval) clearInterval(dailyInterval); scheduledTimers.forEach(id=>clearTimeout(id)); if(coinTimer) clearInterval(coinTimer); });
-
-    });
-  </script>
-
-  <!--
-    Notes:
-    - Replace BACKEND_URL in the JS above with your deployed backend URL.
-    - Place /sw.js at your site root (same domain).
-    - Add /icon.png (recommended) so notification shows a nice icon.
-  -->
 </body>
 </html>

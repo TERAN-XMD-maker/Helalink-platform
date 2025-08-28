@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Helalink — Launching Sept 13</title>
   <meta name="description" content="Helalink — Unlock real online earning methods. Launching Sept 13. Allow reminders for priority onboarding & launch bonuses.">
+  <meta name="author" content="Helalink">
+  <!-- Example CSP comment — tune for production -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' https://cdn.pushalert.co; img-src 'self' data: https:;"> -->
+
   <style>
     :root{
       --bg-1:#050515; --bg-2:#0a0f2a; --glass:rgba(255,255,255,0.06);
@@ -98,65 +102,37 @@
     /* small toast */
     .toast{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,#0b122e,rgba(11,18,46,0.6));padding:12px 16px;border-radius:12px;color:#fff;box-shadow:0 12px 30px rgba(6,7,12,0.6);display:none}
 
-  </style>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #333;
-      color: #fff;
-      padding: 1em;
+    /* Joined section */
+    .joined-section {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: white;
+      padding: 40px 20px;
       text-align: center;
+      border-radius: 20px;
+      margin: 40px auto;
+      max-width: 700px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
     }
-    main {
-      padding: 2em;
-      text-align: center;
-    }
-    button {
-      background: #007bff;
-      color: #fff;
-      padding: 0.8em 1.5em;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
+    .live-header { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+    .dot { width: 10px; height: 10px; background: limegreen; border-radius:50%; box-shadow:0 0 10px limegreen; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:0.7}100%{transform:scale(1);opacity:1} }
+    .joined-fade { max-width:500px; margin:20px auto 30px; background: rgba(255,255,255,0.15); border-radius:15px; padding:30px 20px; box-shadow:0 4px 15px rgba(0,0,0,0.2); position:relative; height:100px; overflow:hidden; }
+    .member-card { position:absolute; width:100%; top:0; left:0; font-size:18px; font-weight:bold; opacity:0; transform:translateY(20px); transition: opacity var(--fade-time,2s) ease-in-out, transform var(--fade-time,2s) ease-in-out; display:flex; align-items:center; justify-content:center; gap:12px; }
+    .member-card.show { opacity:1; transform:translateY(0); animation: glowPulse 3s infinite; }
+    @keyframes glowPulse { 0%{ text-shadow:0 0 5px #fff, 0 0 10px #00e6ff; } 50%{ text-shadow:0 0 15px #fff, 0 0 25px #00e6ff; } 100%{ text-shadow:0 0 5px #fff, 0 0 10px #00e6ff; } }
+    .leaderboard { background: rgba(255,255,255,0.15); border-radius:12px; padding:20px; box-shadow:0 3px 10px rgba(0,0,0,0.2); }
+    .leaderboard ul { list-style:none; margin:0; padding:0; }
+    .leaderboard li { display:flex; align-items:center; gap:10px; margin:6px 0; padding:8px 12px; background:rgba(255,255,255,0.1); border-radius:8px; font-size:15px; font-weight:500; opacity:0; transform:translateY(-10px); animation: slideIn 0.6s ease forwards; }
+    .leaderboard img { width:25px; height:25px; border-radius:50%; border:1px solid white; }
+    @keyframes slideIn { to { opacity:1; transform:translateY(0); } }
   </style>
 
-  <!-- PushAlert -->
-  <script type="text/javascript">
-  (function(d, t) {
-      var g = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      g.src = "https://cdn.pushalert.co/integrate_f8875402a4aca47d9757f70a9b7f7dd4.js";
-      g.onload = function() {
-          // Auto-prompt once PushAlert script is ready
-          if (typeof PushAlertCo !== "undefined") {
-              PushAlertCo.subscriptionPopup();
-          }
-      };
-      s.parentNode.insertBefore(g, s);
-  }(document, "script"));
-  </script>
-  <!-- End PushAlert -->
-
-</head>
-<body>
-  <main>
-    <p>Stay updated with the latest alerts and notifications.</p>
-    <button onclick="PushAlertCo.subscriptionPopup();">Enable Browser Reminders</button>
-  </main>
+  <!-- PushAlert loader (async). Keep origin trusted and update src to your integration key -->
+  <script async src="https://cdn.pushalert.co/integrate_f8875402a4aca47d9757f70a9b7f7dd4.js" id="pushalert-script"></script>
 </head>
 <body>
   <div class="page">
-    <section class="hero">
+    <section class="hero" aria-label="Hero section">
       <canvas id="bgCanvas" aria-hidden="true"></canvas>
 
       <div class="hero-content">
@@ -166,7 +142,7 @@
         <p class="lead">Be among the first to access simple, real ways to earn online with Helalink. Early members get priority onboarding, insider tips, and launch bonuses. Join now before spots fill up.</p>
 
         <div class="meta">
-          <div class="countdown" aria-live="polite">
+          <div class="countdown" aria-live="polite" aria-atomic="true">
             <div class="cd-box"><div id="d" class="cd-num">--</div><div class="cd-lbl">Days</div></div>
             <div class="cd-box"><div id="h" class="cd-num">--</div><div class="cd-lbl">Hours</div></div>
             <div class="cd-box"><div id="m" class="cd-num">--</div><div class="cd-lbl">Minutes</div></div>
@@ -178,9 +154,9 @@
         </div>
       </div>
 
-      <div class="panel">
-        <div class="logo-wrap" aria-hidden="true">
-          <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <div class="panel" aria-hidden="true">
+        <div class="logo-wrap" id="logoWrap" aria-hidden="true">
+          <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Helalink logo">
             <defs>
               <linearGradient id="rainbow" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stop-color="#ff0057" />
@@ -208,311 +184,37 @@
         </div>
       </div>
     </section>
+
 <!-- Recent Members Section -->
-<section class="joined-section">
+<section class="joined-section" aria-label="Recent members">
   <div class="live-header">
     <h2>🎉 Recent Members Joined</h2>
     <div class="live-status">
-      <span class="dot"></span> Live feed active now
+      <span class="dot" aria-hidden="true"></span> <span>Live feed active now</span>
     </div>
   </div>
 
   <!-- Total Counter -->
-  <div class="total-counter">
-    🔢 Total Members: <span id="totalCount">0</span>
-  </div>
+  <div class="total-counter" aria-live="polite">🔢 Total Members: <span id="totalCount">0</span></div>
 
   <!-- Hot Country -->
-  <div class="hot-country">
-    🌍🔥 Hottest Country Today: <span id="hotCountry">Loading...</span>
-  </div>
+  <div class="hot-country">🌍🔥 Hottest Country Today: <span id="hotCountry">Loading...</span></div>
 
   <!-- Highlighted member (fades & slides in) -->
-  <div class="joined-fade">
-    <div class="member-card show" id="member1"></div>
-    <div class="member-card" id="member2"></div>
+  <div class="joined-fade" aria-live="polite">
+    <div class="member-card show" id="member1" role="article"></div>
+    <div class="member-card" id="member2" role="article"></div>
   </div>
 
   <!-- Join Streaks -->
-  <div class="join-streaks">
-    📈 <span id="joinStreak">No streak yet...</span>
-  </div>
+  <div class="join-streaks">📈 <span id="joinStreak">No streak yet...</span></div>
 
   <!-- Leaderboard style (Top 5 recent members list) -->
-  <div class="leaderboard">
+  <div class="leaderboard" aria-label="Top recent joins">
     <h3>👥 Top 5 Recent Joins</h3>
-    <ul id="leaderboardList"></ul>
+    <ul id="leaderboardList" role="list"></ul>
   </div>
 </section>
-
-<style>
-  .joined-section {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    color: white;
-    padding: 40px 20px;
-    text-align: center;
-    border-radius: 20px;
-    margin: 40px auto;
-    max-width: 700px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-  }
-
-  .live-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .live-status {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .dot {
-    width: 10px;
-    height: 10px;
-    background: limegreen;
-    border-radius: 50%;
-    box-shadow: 0 0 10px limegreen;
-    animation: pulse 1.5s infinite;
-  }
-
-  @keyframes pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.7; }
-    100% { transform: scale(1); opacity: 1; }
-  }
-
-  .total-counter, .hot-country, .join-streaks {
-    margin: 15px 0;
-    font-size: 18px;
-    font-weight: bold;
-    text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
-  }
-
-  /* Highlighted Member */
-  .joined-fade {
-    max-width: 500px;
-    margin: 20px auto 30px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 15px;
-    padding: 30px 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    position: relative;
-    height: 100px;
-    overflow: hidden;
-  }
-
-  .member-card {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    font-size: 18px;
-    font-weight: bold;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity var(--fade-time, 2s) ease-in-out, 
-                transform var(--fade-time, 2s) ease-in-out;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-  }
-
-  .member-card img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 2px solid white;
-  }
-
-  .member-card.show {
-    opacity: 1;
-    transform: translateY(0);
-    animation: glowPulse 3s infinite;
-  }
-
-  @keyframes glowPulse {
-    0% { text-shadow: 0 0 5px #fff, 0 0 10px #00e6ff; }
-    50% { text-shadow: 0 0 15px #fff, 0 0 25px #00e6ff; }
-    100% { text-shadow: 0 0 5px #fff, 0 0 10px #00e6ff; }
-  }
-
-  /* Leaderboard Style */
-  .leaderboard {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  }
-
-  .leaderboard h3 {
-    margin-bottom: 10px;
-    font-size: 20px;
-    text-shadow: 1px 2px 4px rgba(0,0,0,0.3);
-  }
-
-  .leaderboard ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .leaderboard li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 6px 0;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 500;
-    opacity: 0;
-    transform: translateY(-10px);
-    animation: slideIn 0.6s ease forwards;
-  }
-
-  .leaderboard img {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    border: 1px solid white;
-  }
-
-  @keyframes slideIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style>
-
-<script>
-  // Configurable settings
-  const fadeDuration = 2;   // seconds
-  const displayTime = 8;    // seconds
-
-  // Country list with flag emojis 🌍
-  const countries = [
-    { name: "Ghana", flag: "🇬🇭" },
-    { name: "Kenya", flag: "🇰🇪" },
-    { name: "Uganda", flag: "🇺🇬" },
-    { name: "Botswana", flag: "🇧🇼" },
-    { name: "Malawi", flag: "🇲🇼" },
-    { name: "Cameroon", flag: "🇨🇲" }
-  ];
-
-  function generateId() {
-    return "******" + Math.floor(1000 + Math.random() * 9000);
-  }
-
-  function getTimeAgo(i) {
-    if (i === 0) return "just now";
-    return i + " min ago";
-  }
-
-  // Generate random members
-  const members = [];
-  for (let i = 0; i < 50; i++) {
-    const c = countries[Math.floor(Math.random() * countries.length)];
-    members.push({
-      id: generateId(),
-      country: c.name,
-      flag: c.flag,
-      avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`,
-      time: getTimeAgo(Math.floor(Math.random() * 10))
-    });
-  }
-
-  let index = 0;
-  let active = 1;
-  let totalCount = 0;
-  let countryCounts = {};
-  let recentJoins = [];
-
-  const member1 = document.getElementById("member1");
-  const member2 = document.getElementById("member2");
-  const leaderboardList = document.getElementById("leaderboardList");
-  const totalCountEl = document.getElementById("totalCount");
-  const hotCountryEl = document.getElementById("hotCountry");
-  const joinStreakEl = document.getElementById("joinStreak");
-
-  // Apply fade duration to CSS variable
-  document.querySelectorAll(".member-card").forEach(el => {
-    el.style.setProperty("--fade-time", fadeDuration + "s");
-  });
-
-  function renderMember(el, data) {
-    el.innerHTML = `
-      <img src="${data.avatar}" alt="avatar">
-      <span>${data.id} from ${data.country} ${data.flag} <small>(${data.time})</small></span>
-    `;
-  }
-
-  // Initialize first
-  renderMember(member1, members[index]);
-  member1.classList.add("show");
-
-  function updateStats(data) {
-    // Update total counter
-    totalCount++;
-    totalCountEl.textContent = totalCount;
-
-    // Update country counts
-    countryCounts[data.country] = (countryCounts[data.country] || 0) + 1;
-    let hottest = Object.entries(countryCounts).sort((a,b) => b[1]-a[1])[0];
-    hotCountryEl.textContent = hottest[0] + " " + countries.find(c => c.name === hottest[0]).flag;
-
-    // Update streaks
-    recentJoins.push(data.country);
-    if (recentJoins.length > 5) recentJoins.shift();
-    let streakCountry = recentJoins[0];
-    let streakCount = recentJoins.filter(c => c === streakCountry).length;
-    joinStreakEl.textContent = streakCount > 1 ? 
-      `${streakCount} people from ${streakCountry} joined recently!` : 
-      `Last join: ${data.country}`;
-  }
-
-  function showNextMember() {
-    index = (index + 1) % members.length;
-    const nextData = members[index];
-
-    // Highlight update (crossfade)
-    if (active === 1) {
-      renderMember(member2, nextData);
-      member2.classList.add("show");
-      member1.classList.remove("show");
-      active = 2;
-    } else {
-      renderMember(member1, nextData);
-      member1.classList.add("show");
-      member2.classList.remove("show");
-      active = 1;
-    }
-
-    // Leaderboard update
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <img src="${nextData.avatar}" alt="avatar">
-      ${nextData.id} - ${nextData.flag} ${nextData.country} <small>(${nextData.time})</small>
-    `;
-    leaderboardList.insertBefore(li, leaderboardList.firstChild);
-    while (leaderboardList.children.length > 5) {
-      leaderboardList.removeChild(leaderboardList.lastChild);
-    }
-
-    // Stats update
-    updateStats(nextData);
-  }
-
-  // Interval = display time + fade time
-  setInterval(showNextMember, (displayTime + fadeDuration) * 1000);
-</script>
-
 
     <!-- Notification Section: Browser + Signal subscribe -->
     <section class="notify" role="region" aria-label="Launch reminders">
@@ -531,7 +233,7 @@
     </section>
 
     <!-- Ways of Earning Section -->
-    <section class="earning">
+    <section class="earning" aria-label="Ways of earning">
       <h2 class="big-header">Ways of Earning</h2>
       <div class="earn-grid">
         <div class="earn-card">▶️ Watching YouTube Videos<br><span>Est: KSh 2k/day · KSh 14k/week</span></div>
@@ -549,32 +251,32 @@
     </section>
 
     <!-- Bots Section -->
-    <section class="bots">
+    <section class="bots" aria-label="Bots">
       <h2 class="big-header">🤖 Smart Bots to Guide You</h2>
 
       <div class="bot">
-        <button class="bot-q">💪 Motivation Bot: Why start an online business?</button>
-        <div class="bot-a">Financial freedom starts with small consistent steps. Helalink pairs training + small tasks so you earn while learning.<div class="bot-actions"><button class="btn-ghost" data-wa-message="I'm%20interested%20in%20joining%20-%20tell%20me%20about%20bonuses">Join via WhatsApp</button><button class="btn-ghost" data-action="more">Tell me more</button></div></div>
+        <button class="bot-q" aria-expanded="false" aria-controls="bot-1">💪 Motivation Bot: Why start an online business?</button>
+        <div id="bot-1" class="bot-a" role="region" aria-hidden="true">Financial freedom starts with small consistent steps. Helalink pairs training + small tasks so you earn while learning.<div class="bot-actions"><button class="btn-ghost" data-wa-message="I'm%20interested%20in%20joining%20-%20tell%20me%20about%20bonuses">Join via WhatsApp</button><button class="btn-ghost" data-action="more">Tell me more</button></div></div>
       </div>
 
       <div class="bot">
-        <button class="bot-q">📚 Training Bot: How will I learn?</button>
-        <div class="bot-a">We provide step-by-step lessons, short videos, and practice tasks. Newcomers get priority coaching during launch.<div class="bot-actions"><button class="btn-ghost" data-wa-message="How%20do%20I%20start%20the%20training%20for%20Helalink%3F">Start Training (WhatsApp)</button><button class="btn-ghost" data-action="curriculum">See curriculum</button></div></div>
+        <button class="bot-q" aria-expanded="false" aria-controls="bot-2">📚 Training Bot: How will I learn?</button>
+        <div id="bot-2" class="bot-a" role="region" aria-hidden="true">We provide step-by-step lessons, short videos, and practice tasks. Newcomers get priority coaching during launch.<div class="bot-actions"><button class="btn-ghost" data-wa-message="How%20do%20I%20start%20the%20training%20for%20Helalink%3F">Start Training (WhatsApp)</button><button class="btn-ghost" data-action="curriculum">See curriculum</button></div></div>
       </div>
 
       <div class="bot">
-        <button class="bot-q">🛠 Onboarding Bot: Why pay activation fee?</button>
-        <div class="bot-a">Activation fees cover onboarding, verification & bonus pools. Think of it as capital to kickstart your micro-business. <div class="bot-actions"><button class="btn-ghost" data-wa-message="I%20want%20to%20pay%20the%20activation%20fee%20-%20how%20do%20I%20proceed%3F">Pay/Ask on WhatsApp</button></div></div>
+        <button class="bot-q" aria-expanded="false" aria-controls="bot-3">🛠 Onboarding Bot: Why pay activation fee?</button>
+        <div id="bot-3" class="bot-a" role="region" aria-hidden="true">Activation fees cover onboarding, verification & bonus pools. Think of it as capital to kickstart your micro-business. <div class="bot-actions"><button class="btn-ghost" data-wa-message="I%20want%20to%20pay%20the%20activation%20fee%20-%20how%20do%20I%20proceed%3F">Pay/Ask on WhatsApp</button></div></div>
       </div>
 
       <div class="bot">
-        <button class="bot-q">🤔Where can i get more information? </button>
-      <div class="bot-a">You can get more information about the business through our official channel. <div class="bot-actions" ><button class="btn-ghost"
-data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow our channel (WhatsApp)</button></div>
-     </div>
+        <button class="bot-q" aria-expanded="false" aria-controls="bot-4">🤔 Where can I get more information?</button>
+        <div id="bot-4" class="bot-a" role="region" aria-hidden="true">You can get more information about the business through our official channel. <div class="bot-actions"><button class="btn-ghost" data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow our channel (WhatsApp)</button></div></div>
+      </div>
+
       <div class="bot">
-        <button class="bot-q">🤝 Support Bot: Do I need an account?</button>
-        <div class="bot-a">Yes — accounts secure your earnings, track affiliate activity and enable payouts. Creating an account is quick and free (fee applies to activation).<div class="bot-actions"><button class="btn-ghost" data-wa-message="I%20want%20to%20create%20an%20account%20-%20what%20do%20I%20need%3F">Create account (WhatsApp)</button></div></div>
+        <button class="bot-q" aria-expanded="false" aria-controls="bot-5">🤝 Support Bot: Do I need an account?</button>
+        <div id="bot-5" class="bot-a" role="region" aria-hidden="true">Yes — accounts secure your earnings, track affiliate activity and enable payouts. Creating an account is quick and free (fee applies to activation).<div class="bot-actions"><button class="btn-ghost" data-wa-message="I%20want%20to%20create%20an%20account%20-%20what%20do%20I%20need%3F">Create account (WhatsApp)</button></div></div>
       </div>
     </section>
 
@@ -584,33 +286,59 @@ data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow o
   </div>
 
   <script>
-    // Helper: open WhatsApp with prefilled message
+    /******************************************************************
+     * Helpers
+     ******************************************************************/
     function openWhatsApp(message){
+      // Phone number used in the page
       const phone = '254717028877';
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-      window.open(url, '_blank');
+      const msg = message || 'Hi! I want to join Helalink.';
+      const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
-    // Helper: open Signal chat (opens Signal app on mobile/desktop if installed)
     function openSignal(){
       const phone = '+254717028877';
       const url = `https://signal.me/#p/${phone}`;
-      window.open(url, '_blank');
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+    function showToast(msg, ms = 4200){
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.style.display = 'block';
+      clearTimeout(el._t);
+      el._t = setTimeout(()=>{ el.style.display='none'; }, ms);
     }
 
+    /******************************************************************
+     * DOM ready
+     ******************************************************************/
     document.addEventListener('DOMContentLoaded', ()=>{
-      // Typing effect
-      const typingEl = document.getElementById('typingText');
-      const fullText = 'HELALINK — coming soon book your slot on WhatsApp';
-      let idx = 0; const speed = 85;
-      (function type(){
-        if(idx <= fullText.length){
-          typingEl.textContent = fullText.slice(0, idx++);
-          setTimeout(type, speed);
-        }
-      })();
 
-      // Countdown
-      const d=document.getElementById('d'), h=document.getElementById('h'), m=document.getElementById('m'), s=document.getElementById('s');
+      /***** Typing effect *****/
+      const typingEl = document.getElementById('typingText');
+      const typingPhrases = [
+        'HELALINK — coming soon. Book your slot on WhatsApp',
+        'Priority onboarding • Launch bonuses • Real earning methods',
+        'Join early — limited priority seats'
+      ];
+      let tpIndex = 0, tpChar = 0, tpForward = true;
+      const tpSpeed = 60;
+      function typingLoop(){
+        const txt = typingPhrases[tpIndex];
+        if(tpForward){
+          tpChar++;
+          if(tpChar >= txt.length) { tpForward = false; setTimeout(typingLoop, 1200); return; }
+        } else {
+          tpChar--;
+          if(tpChar <= 0){ tpForward = true; tpIndex = (tpIndex+1)%typingPhrases.length; setTimeout(typingLoop, 300); return; }
+        }
+        typingEl.textContent = txt.slice(0,tpChar);
+        setTimeout(typingLoop, tpForward ? tpSpeed : 30);
+      }
+      typingLoop();
+
+      /***** Countdown to Sept 13, 2025 (00:00 local) *****/
+      const d = document.getElementById('d'), h = document.getElementById('h'), m = document.getElementById('m'), s = document.getElementById('s');
       const launch = new Date('2025-09-13T00:00:00');
       function tick(){
         const now = new Date();
@@ -627,43 +355,38 @@ data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow o
       }
       tick(); setInterval(tick,1000);
 
-      // WhatsApp CTA (main)
-      const joinBtn = document.getElementById('joinBtn');
-      joinBtn.addEventListener('click', ()=>{
-        // coin burst when user presses Join
-        createBurst(18);
-        openWhatsApp('Hi! Please keep my spot ready,i will join you on 13 September.');
-      });
-
-      // Background canvas (waves + particles)
+      /***** Background canvas waves + particles *****/
       const bg = document.getElementById('bgCanvas');
-      const g = bg.getContext('2d');
-      function resize(){ bg.width = window.innerWidth; bg.height = window.innerHeight; }
-      window.addEventListener('resize', resize); resize();
+      const g = bg.getContext && bg.getContext('2d');
+      function resizeCanvas(){ if(!g) return; bg.width = window.innerWidth; bg.height = window.innerHeight; }
+      window.addEventListener('resize', resizeCanvas); resizeCanvas();
       const particleCount = window.innerWidth < 700 ? 60 : 140;
-      const particles = Array.from({length: particleCount}, ()=>({x:Math.random()*bg.width,y:Math.random()*bg.height,r:Math.random()*1.6+0.4,vx:(Math.random()-0.5)*0.28,vy:(Math.random()-0.5)*0.28}));
-      let t=0;
-      (function draw(){
-        g.clearRect(0,0,bg.width,bg.height);
-        const grad = g.createLinearGradient(0,0,bg.width,bg.height);
-        grad.addColorStop(0,'rgba(5,6,22,0.92)'); grad.addColorStop(1,'rgba(5,12,34,0.92)');
-        g.fillStyle = grad; g.fillRect(0,0,bg.width,bg.height);
-        for(let j=0;j<3;j++){
-          g.beginPath();
-          const amp = 18 + j*16; const freq = 0.0022 + j*0.0012;
-          g.moveTo(0,bg.height/2);
-          for(let x=0;x<bg.width;x+=10){
-            const y = bg.height/2 + Math.sin((x*freq)+t*0.002+j)*amp + j*18;
-            g.lineTo(x,y);
+      let particles = [];
+      if(g){
+        particles = Array.from({length: particleCount}, ()=>({x:Math.random()*bg.width,y:Math.random()*bg.height,r:Math.random()*1.6+0.4,vx:(Math.random()-0.5)*0.28,vy:(Math.random()-0.5)*0.28}));
+        let t=0;
+        (function draw(){
+          g.clearRect(0,0,bg.width,bg.height);
+          const grad = g.createLinearGradient(0,0,bg.width,bg.height);
+          grad.addColorStop(0,'rgba(5,6,22,0.92)'); grad.addColorStop(1,'rgba(5,12,34,0.92)');
+          g.fillStyle = grad; g.fillRect(0,0,bg.width,bg.height);
+          for(let j=0;j<3;j++){
+            g.beginPath();
+            const amp = 18 + j*16; const freq = 0.0022 + j*0.0012;
+            g.moveTo(0,bg.height/2);
+            for(let x=0;x<bg.width;x+=10){
+              const y = bg.height/2 + Math.sin((x*freq)+t*0.002+j)*amp + j*18;
+              g.lineTo(x,y);
+            }
+            g.lineTo(bg.width,bg.height); g.lineTo(0,bg.height);
+            g.fillStyle = `rgba(${40+j*35},${60+j*40},${120+j*30},0.055)`; g.fill();
           }
-          g.lineTo(bg.width,bg.height); g.lineTo(0,bg.height);
-          g.fillStyle = `rgba(${40+j*35},${60+j*40},${120+j*30},0.055)`; g.fill();
-        }
-        particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=bg.width; if(p.x>bg.width)p.x=0; if(p.y<0)p.y=bg.height; if(p.y>bg.height)p.y=0; g.beginPath(); g.arc(p.x,p.y,p.r,0,Math.PI*2); g.fillStyle='rgba(255,255,255,0.06)'; g.fill(); });
-        t++; requestAnimationFrame(draw);
-      })();
+          particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=bg.width; if(p.x>bg.width)p.x=0; if(p.y<0)p.y=bg.height; if(p.y>bg.height)p.y=0; g.beginPath(); g.arc(p.x,p.y,p.r,0,Math.PI*2); g.fillStyle='rgba(255,255,255,0.06)'; g.fill(); });
+          t++; requestAnimationFrame(draw);
+        })();
+      }
 
-      // coin/note drop inside circle
+      /***** Coin/note drop inside circle *****/
       const coinStage = document.querySelector('.coin-stage');
       function createMoney(){
         if(!coinStage) return;
@@ -673,13 +396,10 @@ data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow o
         const lbl = document.createElement('div'); lbl.className='label';
         lbl.textContent = isNote ? 'KSh' : '';
         el.appendChild(lbl);
-        // random left inside stage
-        const W = coinStage.clientWidth; const left = Math.random() * (W - 40);
+        const W = coinStage.clientWidth || 220; const left = Math.random() * (W - 40);
         el.style.left = left + 'px';
-        // horizontal drift
         const dx = (Math.random()*120 - 60).toFixed(0) + 'px';
         el.style.setProperty('--dx', dx);
-        // duration
         const dur = 1800 + Math.random()*2600; // 1.8s - 4.4s
         el.style.animation = `fall ${dur}ms cubic-bezier(.2,.9,.2,1)`;
         coinStage.appendChild(el);
@@ -691,20 +411,25 @@ data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow o
         }
       }
       const coinInterval = window.innerWidth < 700 ? 1100 : 700;
-      let coinTimer = setInterval(()=>{ createMoney(); }, coinInterval);
-      // burst on hover
-      const logoWrap = document.querySelector('.logo-wrap');
-      logoWrap.addEventListener('mouseenter', ()=>{ createBurst(6); });
+      setInterval(()=>{ createMoney(); }, coinInterval);
+      const logoWrap = document.getElementById('logoWrap');
+      if(logoWrap) logoWrap.addEventListener('mouseenter', ()=>{ createBurst(6); });
 
-      // Bots accordion + actions
+      /***** Bots accordion + actions *****/
       document.querySelectorAll('.bot-q').forEach(btn=>{
         btn.addEventListener('click', ()=>{
-          const ans = btn.nextElementSibling;
-          const open = ans.style.display === 'block';
+          const panelId = btn.getAttribute('aria-controls');
+          const ans = document.getElementById(panelId);
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
           // close others
-          document.querySelectorAll('.bot-a').forEach(a=>a.style.display='none');
-          ans.style.display = open ? 'none' : 'block';
-          if(!open){ showToast('Tip: Use the WhatsApp buttons inside answers to join quickly'); }
+          document.querySelectorAll('.bot-q').forEach(b=>{ b.setAttribute('aria-expanded','false'); const p = document.getElementById(b.getAttribute('aria-controls')); if(p){ p.style.display='none'; p.setAttribute('aria-hidden','true'); } });
+          // toggle clicked
+          btn.setAttribute('aria-expanded', String(!expanded));
+          if(ans){
+            ans.style.display = expanded ? 'none' : 'block';
+            ans.setAttribute('aria-hidden', String(expanded));
+          }
+          if(!expanded){ showToast('Tip: Use the WhatsApp buttons inside answers to join quickly'); }
         });
       });
 
@@ -713,8 +438,15 @@ data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow o
         group.addEventListener('click', (e)=>{
           const t = e.target;
           if(t.matches('[data-wa-message]')){
-            const msg = decodeURIComponent(t.getAttribute('data-wa-message'));
-            createBurst(8); openWhatsApp(msg);
+            // Some buttons contain an encoded url or message
+            const raw = t.getAttribute('data-wa-message');
+            // If looks like a URL, open as-is, else send as message
+            if(raw && (raw.startsWith('http://') || raw.startsWith('https://'))){
+              window.open(raw, '_blank', 'noopener,noreferrer');
+            } else {
+              const msg = raw ? decodeURIComponent(raw) : 'Hi, I want to join Helalink.';
+              createBurst(8); openWhatsApp(msg);
+            }
           } else if(t.matches('[data-action]')){
             const a = t.getAttribute('data-action');
             if(a === 'more') showToast('We match weekly goals with rewards — check updates in WhatsApp.');
@@ -723,36 +455,166 @@ data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow o
         });
       });
 
-      // Signal subscribe button
-      document.getElementById('signalBtn').addEventListener('click', ()=>{
-        openSignal(); localStorage.setItem('helalink_signal_sub', 'requested'); document.getElementById('subBadge').style.display = 'inline-block'; showToast('Opened Signal — send the message to subscribe and we\\'ll add you to reminders.');
-      });
-
-      // Toast helper
-      const toastEl = document.getElementById('toast');
-      let toastTimer = null;
-      function showToast(msg, ms=4200){ toastEl.textContent = msg; toastEl.style.display = 'block'; clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ toastEl.style.display='none'; }, ms); }
-
-      // Browser Reminders button — let PushAlert library handle permission prompt.
-      const notifyBtn = document.getElementById('notifyBtn');
-      notifyBtn.addEventListener('click', ()=>{
-        // If PushAlert global is available, call its subscribe method (PushAlert exposes a `pushalert` object when integrated).
-        try {
-          if(window.pushalert && typeof window.pushalert.subscribe === 'function'){
-            window.pushalert.subscribe();
-            document.getElementById('subBadge').style.display = 'inline-block';
-            showToast('Browser reminders: permission prompt opened (check browser).');
-          } else {
-            // Fallback: show message — the PushAlert loader will normally auto-initialize and show prompts
-            showToast('If the browser prompt doesn\\'t appear, ensure notifications are allowed for this site.');
-          }
-        } catch(err){
-          console.warn('PushAlert subscribe error', err);
-          showToast('Could not open browser permission prompt. Check console for details.');
+      /***** Live members feed / leaderboard demo (client-only) *****/
+      (function liveDemo(){
+        const countries = [
+          { name: "Ghana", flag: "🇬🇭" },
+          { name: "Kenya", flag: "🇰🇪" },
+          { name: "Uganda", flag: "🇺🇬" },
+          { name: "Botswana", flag: "🇧🇼" },
+          { name: "Malawi", flag: "🇲🇼" },
+          { name: "Cameroon", flag: "🇨🇲" }
+        ];
+        function generateId() { return "******" + Math.floor(1000 + Math.random() * 9000); }
+        function getTimeAgo(i) { if (i === 0) return "just now"; return i + " min ago"; }
+        const members = [];
+        for (let i = 0; i < 50; i++) {
+          const c = countries[Math.floor(Math.random() * countries.length)];
+          members.push({
+            id: generateId(),
+            country: c.name,
+            flag: c.flag,
+            avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`,
+            time: getTimeAgo(Math.floor(Math.random() * 10))
+          });
         }
+        let index = 0;
+        let active = 1;
+        let totalCount = 0;
+        let countryCounts = {};
+        let recentJoins = [];
+
+        const member1 = document.getElementById("member1");
+        const member2 = document.getElementById("member2");
+        const leaderboardList = document.getElementById("leaderboardList");
+        const totalCountEl = document.getElementById("totalCount");
+        const hotCountryEl = document.getElementById("hotCountry");
+        const joinStreakEl = document.getElementById("joinStreak");
+
+        document.querySelectorAll(".member-card").forEach(el => {
+          el.style.setProperty("--fade-time", "2s");
+        });
+
+        function renderMember(el, data) {
+          el.innerHTML = `
+            <img src="${data.avatar}" alt="avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid white">
+            <span>${data.id} from ${data.country} ${data.flag} <small style="font-weight:400;margin-left:8px">(${data.time})</small></span>
+          `;
+        }
+
+        // init
+        renderMember(member1, members[index]);
+        member1.classList.add("show");
+
+        function updateStats(data) {
+          totalCount++;
+          totalCountEl.textContent = totalCount;
+
+          countryCounts[data.country] = (countryCounts[data.country] || 0) + 1;
+          const hottest = Object.entries(countryCounts).sort((a,b) => b[1]-a[1])[0];
+          if(hottest) {
+            const found = countries.find(c=> c.name === hottest[0]);
+            hotCountryEl.textContent = hottest[0] + (found ? " " + found.flag : "");
+          }
+
+          recentJoins.push(data.country);
+          if (recentJoins.length > 5) recentJoins.shift();
+          const streakCountry = recentJoins[0];
+          const streakCount = recentJoins.filter(c => c === streakCountry).length;
+          joinStreakEl.textContent = streakCount > 1 ?
+            `${streakCount} people from ${streakCountry} joined recently!` :
+            `Last join: ${data.country}`;
+        }
+
+        function showNextMember() {
+          index = (index + 1) % members.length;
+          const nextData = members[index];
+
+          if (active === 1) {
+            renderMember(member2, nextData);
+            member2.classList.add("show");
+            member1.classList.remove("show");
+            active = 2;
+          } else {
+            renderMember(member1, nextData);
+            member1.classList.add("show");
+            member2.classList.remove("show");
+            active = 1;
+          }
+
+          const li = document.createElement("li");
+          li.innerHTML = `
+            <img src="${nextData.avatar}" alt="avatar">
+            ${nextData.id} - ${nextData.flag} ${nextData.country} <small style="margin-left:auto;font-weight:400">(${nextData.time})</small>
+          `;
+          leaderboardList.insertBefore(li, leaderboardList.firstChild);
+          while (leaderboardList.children.length > 5) {
+            leaderboardList.removeChild(leaderboardList.lastChild);
+          }
+
+          updateStats(nextData);
+        }
+
+        setInterval(showNextMember, (8 + 2) * 1000);
+      })();
+
+      /***** Main CTA (Join) *****/
+      const joinBtn = document.getElementById('joinBtn');
+      if(joinBtn){
+        joinBtn.addEventListener('click', ()=>{
+          createBurst(18);
+          openWhatsApp('Hi! Please keep my spot ready, I will join on 13 September.');
+        });
+      }
+
+      /***** Generic "join" class (if any other joins are added) *****/
+      document.querySelectorAll('.join-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const action = btn.dataset.action;
+          if(action === 'whatsapp') openWhatsApp();
+          else if(action === 'signal') openSignal();
+        });
       });
 
-    });
+      /***** Signal subscribe button *****/
+      const signalBtn = document.getElementById('signalBtn');
+      if(signalBtn){
+        signalBtn.addEventListener('click', ()=>{
+          openSignal();
+          try { localStorage.setItem('helalink_signal_sub', 'requested'); } catch(e){}
+          document.getElementById('subBadge').style.display = 'inline-block';
+          showToast("Opened Signal — send the message to subscribe and we'll add you to reminders.");
+        });
+      }
+
+      /***** Browser Reminders button (PushAlert) *****/
+      const notifyBtn = document.getElementById('notifyBtn');
+      if(notifyBtn){
+        notifyBtn.addEventListener('click', ()=>{
+          try {
+            // PushAlert integration exposes different globals depending on version
+            if (window.PushAlertCo && typeof PushAlertCo.subscriptionPopup === 'function') {
+              PushAlertCo.subscriptionPopup();
+              document.getElementById('subBadge').style.display = 'inline-block';
+              showToast('Browser reminders: permission prompt opened (check browser).');
+            } else if (window.pushalert && typeof window.pushalert.subscribe === 'function') {
+              window.pushalert.subscribe();
+              document.getElementById('subBadge').style.display = 'inline-block';
+              showToast('Browser reminders: permission prompt opened (check browser).');
+            } else {
+              // fallback: the external script is still loading or blocked
+              showToast('If the browser prompt doesn\'t appear, ensure notifications are allowed for this site.');
+            }
+          } catch(err){
+            console.warn('PushAlert subscribe error', err);
+            showToast('Could not open browser permission prompt. Check console for details.');
+          }
+        });
+      }
+
+      /***** Toast helper already available above *****/
+
+    }); // DOMContentLoaded
   </script>
 </body>
 </html>

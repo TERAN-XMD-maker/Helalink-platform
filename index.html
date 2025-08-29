@@ -22,15 +22,13 @@
       --bg:#03040a;--card:#071026;--muted:#94a3b8;
       --glass: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     }
-    html,body{min-height:100%;background:linear-gradient(180deg,#02020a 0%, #04061a 100%);color:#e6eef8;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto;margin:0;padding:0}
-
-    /* Typing + rainbow text */
+    html,body{min-height:100%;background:linear-gradient(180deg,#02020a 0%, #04061a 100%);color:#e6eef8;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto}
     .rainbow{background:linear-gradient(90deg,#ff0066,#ffcc00,#33ff00,#00ccff,#7a00ff);background-size:600% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:slide 7s linear infinite}
     @keyframes slide{0%{background-position:0% 50%}100%{background-position:100% 50%}}
     .caret::after{content:"|";margin-left:6px;animation:blink 1s step-end infinite}
     @keyframes blink{50%{opacity:0}}
 
-    /* Rocket star layers */
+    /* Rocket viewport */
     .rocket-viewport{position:relative;height:360px;border-radius:16px;overflow:hidden;background:radial-gradient(ellipse at center,#04102a 0%, #000814 60%);box-shadow:0 10px 40px rgba(0,0,0,.7)}
     .stars{position:absolute;inset:0;background-repeat:repeat;pointer-events:none}
     .stars.layer1{background-image:radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.9) 40%, transparent 41%);background-size:1200px 600px;animation:move1 28s linear infinite}
@@ -49,7 +47,6 @@
       background: var(--glass);
       border: 1px solid rgba(255,255,255,0.04);
       transition: transform .25s ease, box-shadow .25s ease;
-      cursor: pointer;
     }
     .shiny-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,.75) }
     .shiny-card::before{
@@ -67,17 +64,13 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* Selected state when user indicates interest */
     .shiny-card.selected { box-shadow: 0 10px 30px rgba(124,58,237,0.12); transform: translateY(-6px); }
     .interest-badge { font-size: 12px; padding: 6px 8px; border-radius: 999px; background: rgba(255,255,255,0.04); display:inline-block; }
 
+    /* small UI niceties */
     .glass{background:var(--glass);border-radius:12px;border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
     .text-slate-400 { color: #cbd5e1; }
-
-    /* joiner card */
-    .joiner-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04)}
-    .active-dot{width:10px;height:10px;border-radius:999px;background:#22c55e;box-shadow:0 0 8px #22c55e}
-    .dot-pulse::after{content:"";position:absolute;left:-6px;top:-6px;width:22px;height:22px;border-radius:50%;background:rgba(34,197,94,0.12);animation:pulse 1.6s infinite}
-    @keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.6);opacity:0}}
 
     /* Responsive tweak */
     @media (max-width:768px){ .rocket-viewport{height:240px} }
@@ -93,7 +86,7 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-4 pt-10 pb-28">
-    <!-- Hero & Rocket -->
+    <!-- Hero -->
     <section class="grid md:grid-cols-2 gap-8 items-start">
       <div>
         <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
@@ -105,8 +98,8 @@
         <div class="mt-6 flex gap-3">
           <a href="#join" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-cyan-500/30 to-indigo-500/20 border border-cyan-400/20 text-cyan-200 font-semibold hover:scale-[1.02] transition" aria-label="Join the waitlist">Join the Waitlist</a>
 
-          <!-- Button triggers OneSignal permission -->
-          <button id="notifyBtn" class="px-5 py-3 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 font-semibold hover:scale-[1.02] transition" aria-label="Enable Notifications">Enable Notifications</button>
+          <!-- Custom button triggers OneSignal native prompt -->
+          <button id="notifyBtn" class="px-5 py-3 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 font-semibold hover:scale-[1.02] transition" aria-label="Enable notifications">Enable Notifications</button>
 
           <a href="https://wa.me/254717028877?text=Hi%20HELALINK%20team!%20I%20want%20to%20join%20the%20launch%20waitlist." target="_blank" class="px-4 py-3 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-amber-300 font-semibold hover:scale-[1.02] transition" aria-label="Join via WhatsApp">Join via WhatsApp</a>
         </div>
@@ -124,23 +117,9 @@
         <div class="stars layer2"></div>
         <div class="stars layer3"></div>
 
-        <div class="rocket-center" style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);z-index:20;pointer-events:none">
-          <!-- Rocket SVG (kept simple for clarity) -->
-          <svg class="rocket-svg" viewBox="0 0 120 240" xmlns="http://www.w3.org/2000/svg" width="220" aria-hidden="true">
-            <defs>
-              <linearGradient id="rb2" x1="0" x2="1"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient>
-            </defs>
-            <g>
-              <path d="M60 14 C74 40 78 84 78 114 L42 114 C42 84 46 40 60 14Z" fill="url(#rb2)" stroke="#ffffff14" stroke-width="1"/>
-              <rect x="44" y="114" width="32" height="46" rx="8" fill="#ffffff09"/>
-              <circle cx="60" cy="64" r="12" fill="#020316" stroke="#c7d2fe" stroke-width="1"/>
-              <g id="flame">
-                <path d="M60 158 C54 182 54 210 60 226 C66 210 66 182 60 158Z" fill="#fb923c"/>
-                <path d="M60 170 C56 188 56 200 60 212 C64 200 64 188 60 170Z" fill="#ef4444"/>
-              </g>
-              <text x="60" y="58" text-anchor="middle" style="font-family:'Space Grotesk',Inter,system-ui;fill:#ffffffcc;font-weight:700;font-size:10px;letter-spacing:2px">HELALINK</text>
-            </g>
-          </svg>
+        <div class="rocket-center" style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);z-index:20;">
+          <!-- simplified rocket emoji for quick render; replace with your SVG if needed -->
+          <div style="font-size:120px;filter:drop-shadow(0 10px 30px rgba(0,0,0,.7))">🚀</div>
         </div>
 
         <div class="absolute left-4 bottom-4 p-3 rounded-lg bg-white/3 text-sm font-semibold">Preparing for Liftoff • 13 Sep 2025 • 2:00 PM EAT</div>
@@ -166,6 +145,7 @@
           </div>
           <div class="mt-3 flex items-center justify-between">
             <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20join%20HELALINK%20affiliate" target="_blank" aria-label="Join affiliate via WhatsApp">Join via WhatsApp</a>
+            <button class="toggle-interest hidden" aria-hidden="true">Toggle</button>
           </div>
         </article>
 
@@ -301,46 +281,29 @@
     <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.92 11.92 0 0 0 12.05 0C5.4 0 .03 5.36.03 12a11.9 11.9 0 0 0 1.63 6L0 24l6.16-1.61A11.95 11.95 0 0 0 12 24h.01c6.64 0 12.02-5.36 12.02-12.01 0-3.21-1.25-6.23-3.51-8.51Zm-8.5 19.05h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.2-3.65.96.98-3.56-.24-.37a9.9 9.9 0 0 1-1.51-5.26c0-5.46 4.45-9.9 9.93-9.9 2.65 0 5.15 1.03 7.02 2.9a9.8 9.8 0 0 1 2.9 7c0 5.47-4.46 9.91-10 9.91Zm5.44-7.43c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17-.35.22-.64.07c-.3-.15-1.26-.46-2.4-1.47-.89-.78-1.48-1.74-1.65-2.03-.17-.3-.02-.46.13-.61.14-.14.3-.37.45-.56.15-.19.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1-1.03 2.46s1.06 2.86 1.2 3.06c.15.2 2.08 3.18 5.04 4.45.7.3 1.24.48 1.66.62.7.22 1.34.19 1.85.12.56-.08 1.76-.72 2.01-1.41.25-.7.25-1.3.17-1.41-.08-.12-.27-.2-.57-.35Z"/></svg>
   </a>
 
-  <!-- Toast -->
+  <!-- Toast UI -->
   <div id="toast" style="position:fixed;left:50%;transform:translateX(-50%);bottom:92px;background:#0b1220;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);display:none;z-index:1000;color:#e6eef8"></div>
 
-  <!-- OneSignal SDK (client) -->
+  <!-- OneSignal SDK (defer so it doesn't block) -->
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 
   <script>
-    /************************************************************
-     * HELALINK Landing Page - OneSignal + interest tags
-     * - Initializes OneSignal with the provided App ID
-     * - Lets users toggle interests (10 earning cards)
-     * - Stores interest selections in localStorage so tags can be sent when user subscribes
-     * - Sends tags to OneSignal when subscription is confirmed or when toggles change after subscribing
-     *
-     * IMPORTANT:
-     * - Do NOT put your OneSignal REST API Key into client-side code.
-     * - The server-side REST key is used only for sending notifications from your backend.
-     ************************************************************/
-
-    // ---- Basic UI helpers ----
-    function showToast(msg, ms = 3500) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.style.display = 'block';
-      clearTimeout(t._hideTimeout);
-      t._hideTimeout = setTimeout(()=> t.style.display = 'none', ms);
-    }
-
-    // Typing + countdown (client)
+    // ------------------------
+    // UI: Typing + Countdown
+    // ------------------------
     const typeEl = document.getElementById('type');
     const phrases = ['Online Business Platform','Set New Records in Networking 🎊','HELALINK Agencies dropping soon ♦️','Launch: 13 Sep 2025 • 2PM EAT'];
     let pi=0, ci=0, deleting=false;
     function tick(){ const full=phrases[pi]; if(!deleting) ci++; else ci--; typeEl.textContent=full.slice(0,ci); if(!deleting && ci===full.length){deleting=true; setTimeout(tick,1200); return} if(deleting && ci===0){deleting=false; pi=(pi+1)%phrases.length} setTimeout(tick, deleting?40:70);} tick();
 
     const cd = document.getElementById('countdown');
-    const launchDate = new Date('2025-09-13T11:00:00Z'); // 14:00 EAT
+    const launchDate = new Date('2025-09-13T11:00:00Z'); // 2:00 PM EAT
     function updateCountdown(){ const now=new Date(); let diff=Math.max(0, launchDate - now); const d=Math.floor(diff/86400000); diff -= d*86400000; const h=Math.floor(diff/3600000); diff -= h*3600000; const m=Math.floor(diff/60000); diff -= m*60000; const s=Math.floor(diff/1000); cd.textContent = `${d}d ${h}h ${m}m ${s}s`; }
     updateCountdown(); setInterval(updateCountdown,1000);
 
-    // simulated joiners (keeps your existing behaviour)
+    // ------------------------
+    // Simulated joiners (keeps your original behavior)
+    // ------------------------
     const professionalFeed = document.getElementById('professionalFeed');
     const onlineList = document.getElementById('onlineList');
     const names = ['Amina','Jayden','Fatma','Olu','Grace','Rashid','Ivy','Zara','Kofi','Liam','Tariq','Mira','Noah','Leah','Kwame','Nadia','Yusuf','Aaliyah'];
@@ -383,173 +346,125 @@
     for(let i=0;i<5;i++){ addLocalProfessional(); }
     setInterval(addLocalProfessional, 4200 + Math.random()*3000);
 
-    // ---- Interest toggles + local persistence ----
-    const selectedInterests = new Set(JSON.parse(localStorage.getItem('hl_interests') || '[]'));
-    const cards = document.querySelectorAll('.shiny-card[data-key]');
+    // ------------------------
+    // OneSignal integration (no Firebase)
+    // ------------------------
 
-    function refreshUIFromInterests() {
-      cards.forEach(card=>{
+    // We'll keep a handle to OneSignal (set after SDK calls our init callback).
+    let OneSignalHandle = null;
+    // store selected interests (keys correspond to data-key on cards)
+    const selectedInterests = new Set();
+
+    function showToast(msg, ms = 3500) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(t._hideTimeout);
+      t._hideTimeout = setTimeout(()=> t.style.display = 'none', ms);
+    }
+
+    // Attach click-to-select behavior to each shiny card
+    function wireInterestToggle() {
+      const cards = document.querySelectorAll('.shiny-card[data-key]');
+      cards.forEach(card => {
         const key = card.getAttribute('data-key');
-        const is = selectedInterests.has(key);
-        card.classList.toggle('selected', is);
-        card.setAttribute('aria-pressed', is ? 'true' : 'false');
+        // click and keyboard accessible
+        const toggle = () => {
+          const was = card.classList.toggle('selected');
+          card.setAttribute('aria-pressed', was ? 'true' : 'false');
+          if (was) selectedInterests.add(key); else selectedInterests.delete(key);
+          // if subscribed to OneSignal, update tags immediately
+          if (OneSignalHandle) {
+            const tagObj = {};
+            tagObj['interest_' + key] = was ? '1' : '0';
+            OneSignalHandle.sendTags(tagObj).catch(e=>console.warn('sendTags err', e));
+          }
+        };
+        card.addEventListener('click', (e)=>{ if ((e.target.tagName||'').toLowerCase() === 'a') return; toggle(); });
+        card.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
       });
     }
-    refreshUIFromInterests();
+    wireInterestToggle();
 
-    function persistInterests() {
-      localStorage.setItem('hl_interests', JSON.stringify(Array.from(selectedInterests)));
-    }
-
-    // Wire toggles: accessible clicks + keyboard
-    cards.forEach(card => {
-      const key = card.getAttribute('data-key');
-      const toggle = async () => {
-        const was = selectedInterests.has(key);
-        if (was) selectedInterests.delete(key); else selectedInterests.add(key);
-        persistInterests();
-        refreshUIFromInterests();
-        // If already subscribed to OneSignal, send immediate tag update
-        if (window.OneSignalInstance && typeof window.OneSignalInstance.sendTags === 'function') {
-          const tags = {};
-          tags['interest_' + key] = selectedInterests.has(key) ? '1' : '0';
-          try { await window.OneSignalInstance.sendTags(tags); } catch(e){ console.warn('sendTags error', e); }
-        }
-      };
-      card.addEventListener('click', (e)=>{ if((e.target.tagName||'').toLowerCase() === 'a') return; toggle(); });
-      card.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
-    });
-
-    // ---- OneSignal client setup ----
-    // Your OneSignal App ID (used on the client). This is safe to include in front-end.
-    const ONESIGNAL_APP_ID = "7812cafe-fa18-4b12-ac47-f95f2ce4077f";
-
-    // Queue functions to run after SDK loads
+    // OneSignalDeferred usage (SDK will call these queued functions when loaded)
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
       try {
+        // init
         await OneSignal.init({
-          appId: ONESIGNAL_APP_ID,
-          allowLocalhostAsSecureOrigin: true, // helpful when testing on localhost
+          appId: "7812cafe-fa18-4b12-ac47-f95f2ce4077f",
+          allowLocalhostAsSecureOrigin: true,
           welcomeNotification: { title: "HELALINK", message: "Thanks for enabling HELALINK notifications!" }
         });
 
-        // Save reference for use elsewhere
-        window.OneSignalInstance = OneSignal;
+        // store handle
+        OneSignalHandle = OneSignal;
 
-        // If user already subscribed, ensure tags are synced
-        try {
-          const isEnabled = await OneSignal.isPushNotificationsEnabled();
-          if (isEnabled) {
-            // mark local state
-            localStorage.setItem('hl_subscribed', '1');
-            // push baseline tags + interest tags
-            const tagObj = { helalink_subscribed: '1', signup_source: 'web-landing' };
-            const stored = JSON.parse(localStorage.getItem('hl_interests') || '[]');
-            // set all interest tags to 0 or 1 so targeting is explicit
-            document.querySelectorAll('.shiny-card[data-key]').forEach(card=>{
-              const k = card.getAttribute('data-key');
-              tagObj['interest_' + k] = stored.includes(k) ? '1' : '0';
-            });
-            await OneSignal.sendTags(tagObj);
+        // If user toggles interests before subscribing, we'll push tags when they subscribe.
+        // Bind enable notifications button
+        const notifyBtn = document.getElementById('notifyBtn');
+        notifyBtn.addEventListener('click', async () => {
+          try {
+            // If browser supports native prompt, show it. Otherwise show slidedown
+            if (OneSignal.isPushNotificationsSupported && await OneSignal.isPushNotificationsSupported()) {
+              // Use native permission (this will prompt the browser permission)
+              await OneSignal.showNativePrompt();
+            } else {
+              await OneSignal.showSlidedownPrompt();
+            }
+          } catch (err) {
+            console.error('OneSignal prompt error', err);
+            showToast('Could not show permission prompt.');
           }
-        } catch(e) { console.warn('isPushNotificationsEnabled check error', e); }
+        });
 
-        // subscription change listener
+        // Listen for subscription changes (user accepted or denied)
         if (OneSignal.on) {
           OneSignal.on('subscriptionChange', async function(isSubscribed) {
-            if (isSubscribed) {
-              localStorage.setItem('hl_subscribed', '1');
-              // prepare tags: baseline + interest tags
-              const tags = { helalink_subscribed: '1', signup_source: 'web-landing' };
-              const stored = JSON.parse(localStorage.getItem('hl_interests') || '[]');
-              document.querySelectorAll('.shiny-card[data-key]').forEach(card=>{
-                const k = card.getAttribute('data-key');
-                tags['interest_' + k] = stored.includes(k) ? '1' : '0';
-              });
-              try {
+            try {
+              if (isSubscribed) {
+                const userId = await OneSignal.getUserId();
+                const deviceState = OneSignal.getDeviceState ? await OneSignal.getDeviceState() : null;
+                console.log('OneSignal subscribed. userId:', userId, 'deviceState:', deviceState);
+                // send a base tag + interest tags
+                const tags = { helalink_subscribed: '1', signup_source: 'web-landing' };
+                selectedInterests.forEach(k => tags['interest_' + k] = '1');
+                // ensure unselected interests are set to 0 (so campaigns can target explicitly)
+                document.querySelectorAll('.shiny-card[data-key]').forEach(card=>{
+                  const k = card.getAttribute('data-key');
+                  if (!selectedInterests.has(k)) tags['interest_' + k] = '0';
+                });
                 await OneSignal.sendTags(tags);
                 showToast('Notifications enabled ✅');
-              } catch(e) {
-                console.warn('sendTags on subscription error', e);
-                showToast('Subscribed — but failed to sync tags.');
+              } else {
+                // unsubscribed or permission denied
+                showToast('Notifications disabled or blocked.');
               }
-            } else {
-              localStorage.removeItem('hl_subscribed');
-              showToast('Notifications disabled or blocked.');
+            } catch (e) {
+              console.error('on subscriptionChange handler error', e);
             }
           });
         }
 
-      } catch (errInit) {
-        console.warn('OneSignal init failed', errInit);
-      }
-    });
-
-    // Handle the "Enable Notifications" button -> show prompt
-    document.getElementById('notifyBtn').addEventListener('click', async () => {
-      try {
-        // Wait for SDK to be loaded and OneSignalInstance to exist (if not, user loaded early)
-        const waitForOneSignal = () => new Promise((resolve) => {
-          const max = 8000; let waited = 0;
-          const iv = setInterval(()=> {
-            if (window.OneSignalInstance) { clearInterval(iv); resolve(true); }
-            waited += 200;
-            if (waited >= max) { clearInterval(iv); resolve(false); }
-          }, 200);
-        });
-        const ok = await waitForOneSignal();
-        if (!ok) {
-          showToast('Notification system not loaded yet. Try again in a moment.');
-          return;
-        }
-
-        const OneSignal = window.OneSignalInstance;
-
-        // Check if push is supported
-        let supported = true;
+        // If user was already subscribed when they load the page, sync current subscription & query tags
         try {
-          if (typeof OneSignal.isPushNotificationsSupported === 'function') supported = await OneSignal.isPushNotificationsSupported();
-        } catch(e){ supported = true; }
-
-        if (!supported) {
-          alert('Push notifications are not supported on this browser.');
-          return;
-        }
-
-        // Prefer native prompt if available
-        try {
-          if (typeof OneSignal.showNativePrompt === 'function') {
-            await OneSignal.showNativePrompt();
-          } else if (typeof OneSignal.showSlidedownPrompt === 'function') {
-            await OneSignal.showSlidedownPrompt();
-          } else if (typeof OneSignal.registerForPushNotifications === 'function') {
-            await OneSignal.registerForPushNotifications();
-          } else {
-            // fallback: ask for permission via Notification API, then subscribe via OneSignal if granted
-            const p = await Notification.requestPermission();
-            if (p !== 'granted') {
-              showToast('Permission not granted.');
-              return;
+          const isEnabled = await OneSignal.isPushNotificationsEnabled();
+          if (isEnabled) {
+            // fetch user id and send baseline tags if not present
+            const uid = await OneSignal.getUserId();
+            if (uid) {
+              await OneSignal.sendTags({ helalink_subscribed: '1', signup_source: 'web-landing' });
             }
           }
-        } catch (e) {
-          console.warn('Prompt method failed, falling back.', e);
-          try { await Notification.requestPermission(); } catch{}
-        }
-      } catch (err) {
-        console.error('notifyBtn error', err);
-        showToast('Could not show permission prompt. Check console.');
+        } catch(e){ /* ignore */ }
+
+      } catch (e) {
+        console.error('OneSignal init failed', e);
       }
     });
 
-    // If the user toggles interests prior to subscribing, we send tags post-subscription in subscriptionChange handler.
-    // Also keep tags in sync if user toggles interests after subscription (handled in toggle code above).
-
-    // Accessibility: allow keyboard focus outline for cards
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Tab') document.body.classList.add('user-tabbing');
-    });
+    // Optional: expose function to send custom test notification via REST API (server side recommended)
+    // (Not included here for security reasons — use OneSignal Dashboard or REST server key.)
 
   </script>
 </body>

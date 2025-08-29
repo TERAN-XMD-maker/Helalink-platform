@@ -1,530 +1,556 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Helalink — Launching Sept 13</title>
-  <meta name="description" content="Helalink — Unlock real online earning methods. Launching Sept 13. Allow reminders for priority onboarding & launch bonuses.">
-  <meta name="author" content="Helalink">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>HELALINK • Official Launch 13 Sep 2025 (2PM EAT)</title>
+  <meta name="description" content="HELALINK – Online business platform. Launching 13 Sep 2025. Join now, get updates, and start earning through multiple methods." />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:title" content="HELALINK • Official Launch 13 Sep 2025 (2PM EAT)" />
+  <meta property="og:description" content="A next-gen online business platform with multiple ways of earning. Join the launch waitlist today!" />
+  <meta property="og:image" content="https://yourdomain.com/helalink-og.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- Tailwind + Fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg-1:#050515; --bg-2:#0a0f2a; --glass:rgba(255,255,255,0.06);
-      --rainbow: linear-gradient(90deg,#ff0057,#ff7a00,#ffd400,#2be2a5,#00c6ff,#9b6bff,#ff0057);
-      --gold-1:#ffd54a; --gold-2:#ffb300;
+      --bg:#03040a;--card:#071026;--muted:#94a3b8;
+      --glass: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
     }
-    *{box-sizing:border-box;font-family:Inter, Poppins, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg-1),var(--bg-2));color:#f5faff}
-    .page{min-height:100vh;display:flex;flex-direction:column}
-    /* (styles unchanged from previous version) */
-    /* ... (omitted here for brevity in this snippet block but included in the real file) ... */
-    /* Please note: full styles are included in the delivered file below. */
+    html,body{min-height:100%;background:linear-gradient(180deg,#02020a 0%, #04061a 100%);color:#e6eef8;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto;margin:0;padding:0}
+
+    /* Typing + rainbow text */
+    .rainbow{background:linear-gradient(90deg,#ff0066,#ffcc00,#33ff00,#00ccff,#7a00ff);background-size:600% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:slide 7s linear infinite}
+    @keyframes slide{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+    .caret::after{content:"|";margin-left:6px;animation:blink 1s step-end infinite}
+    @keyframes blink{50%{opacity:0}}
+
+    /* Rocket star layers */
+    .rocket-viewport{position:relative;height:360px;border-radius:16px;overflow:hidden;background:radial-gradient(ellipse at center,#04102a 0%, #000814 60%);box-shadow:0 10px 40px rgba(0,0,0,.7)}
+    .stars{position:absolute;inset:0;background-repeat:repeat;pointer-events:none}
+    .stars.layer1{background-image:radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.9) 40%, transparent 41%);background-size:1200px 600px;animation:move1 28s linear infinite}
+    .stars.layer2{background-image:radial-gradient(1.2px 1.2px at 80px 120px, rgba(255,255,255,.6) 40%, transparent 41%);background-size:900px 450px;animation:move2 18s linear infinite}
+    .stars.layer3{background-image:radial-gradient(0.9px 0.9px at 200px 90px, rgba(255,255,255,.35) 40%, transparent 41%);background-size:600px 300px;animation:move3 10s linear infinite}
+    @keyframes move1{from{transform:translateX(0) translateY(0)}to{transform:translateX(-1200px) translateY(-400px)}}
+    @keyframes move2{from{transform:translateX(0) translateY(0)}to{transform:translateX(-900px) translateY(-250px)}}
+    @keyframes move3{from{transform:translateX(0) translateY(0)}to{transform:translateX(-600px) translateY(-120px)}}
+
+    /* Shiny colorful animated border (per-card via CSS variable --g) */
+    .shiny-card {
+      position: relative;
+      border-radius: 14px;
+      overflow: visible;
+      padding: 18px;
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,0.04);
+      transition: transform .25s ease, box-shadow .25s ease;
+      cursor: pointer;
+    }
+    .shiny-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 40px rgba(2,6,23,.75) }
+    .shiny-card::before{
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 16px;
+      padding: 3px;
+      background: var(--g, conic-gradient(#ff0066,#ffcc00,#33ff00,#00ccff,#7a00ff));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      animation: spin 5s linear infinite;
+      z-index: -1;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .shiny-card.selected { box-shadow: 0 10px 30px rgba(124,58,237,0.12); transform: translateY(-6px); }
+    .interest-badge { font-size: 12px; padding: 6px 8px; border-radius: 999px; background: rgba(255,255,255,0.04); display:inline-block; }
+
+    .glass{background:var(--glass);border-radius:12px;border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px)}
+    .text-slate-400 { color: #cbd5e1; }
+
+    /* joiner card */
+    .joiner-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04)}
+    .active-dot{width:10px;height:10px;border-radius:999px;background:#22c55e;box-shadow:0 0 8px #22c55e}
+    .dot-pulse::after{content:"";position:absolute;left:-6px;top:-6px;width:22px;height:22px;border-radius:50%;background:rgba(34,197,94,0.12);animation:pulse 1.6s infinite}
+    @keyframes pulse{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.6);opacity:0}}
+
+    /* Responsive tweak */
+    @media (max-width:768px){ .rocket-viewport{height:240px} }
   </style>
-
-  <!-- OneSignal: Add SDK script and init.
-       IMPORTANT:
-       1) Upload OneSignalSDKWorker.js & OneSignalSDKUpdaterWorker.js to your site root.
-       2) Keep the same appId below (you provided it earlier). -->
-  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-  <script>
-    window.OneSignal = window.OneSignal || [];
-    OneSignal.push(function() {
-      OneSignal.init({
-        appId: "7812cafe-fa18-4b12-ac47-f95f2ce4077f",
-        // disable built-in bell because we use our custom button
-        notifyButton: { enable: false }
-      });
-    });
-  </script>
-
 </head>
 <body>
-  <div class="page">
-    <section class="hero" aria-label="Hero section">
-      <canvas id="bgCanvas" aria-hidden="true"></canvas>
+  <!-- Header -->
+  <header class="sticky top-0 z-40 border-b border-white/5 bg-[#020316]/60 backdrop-blur">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="text-sm text-slate-300">Official Launch <span class="font-semibold">13 Sep 2025, 2:00 PM EAT</span></div>
+      <div id="countdown" class="text-sm font-semibold text-slate-200" aria-live="polite"></div>
+    </div>
+  </header>
 
-      <div class="hero-content">
-        <div class="eyebrow">Helalink • Online Business Platform</div>
-        <h2 class="big-header">The future of online earning starts here</h2>
-        <h1><span class="typing" id="typingText" aria-hidden="true"></span></h1>
-        <p class="lead">Be among the first to access simple, real ways to earn online with Helalink. Early members get priority onboarding, insider tips, and launch bonuses. Join now before spots fill up.</p>
+  <main class="max-w-6xl mx-auto px-4 pt-10 pb-28">
+    <!-- Hero & Rocket -->
+    <section class="grid md:grid-cols-2 gap-8 items-start">
+      <div>
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
+          <span class="rainbow">HELALINK</span>
+          <span class="block mt-2 caret" id="type" aria-hidden="true"></span>
+        </h1>
+        <p class="mt-5 text-slate-300 max-w-prose">A next-gen online business platform. Set new records in networking and unlock multiple earning streams. Don’t miss the launch — secure your spot now.</p>
 
-        <div class="meta">
-          <div class="countdown" aria-live="polite" aria-atomic="true">
-            <div class="cd-box"><div id="d" class="cd-num">--</div><div class="cd-lbl">Days</div></div>
-            <div class="cd-box"><div id="h" class="cd-num">--</div><div class="cd-lbl">Hours</div></div>
-            <div class="cd-box"><div id="m" class="cd-num">--</div><div class="cd-lbl">Minutes</div></div>
-            <div class="cd-box"><div id="s" class="cd-num">--</div><div class="cd-lbl">Seconds</div></div>
-          </div>
-          <div class="cta-wrap">
-            <button id="joinBtn" class="btn btn-join pulse" aria-label="Join via WhatsApp">Join Early on WhatsApp</button>
-          </div>
+        <div class="mt-6 flex gap-3">
+          <a href="#join" class="px-5 py-3 rounded-2xl bg-gradient-to-r from-cyan-500/30 to-indigo-500/20 border border-cyan-400/20 text-cyan-200 font-semibold hover:scale-[1.02] transition" aria-label="Join the waitlist">Join the Waitlist</a>
+
+          <!-- Button triggers OneSignal permission -->
+          <button id="notifyBtn" class="px-5 py-3 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-200 font-semibold hover:scale-[1.02] transition" aria-label="Enable Notifications">Enable Notifications</button>
+
+          <a href="https://wa.me/254717028877?text=Hi%20HELALINK%20team!%20I%20want%20to%20join%20the%20launch%20waitlist." target="_blank" class="px-4 py-3 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-amber-300 font-semibold hover:scale-[1.02] transition" aria-label="Join via WhatsApp">Join via WhatsApp</a>
+        </div>
+
+        <p class="mt-3 text-xs text-slate-400">We’ll send launch alerts and offers. You can opt out anytime.</p>
+
+        <div class="mt-4 glass rounded-2xl p-4" role="note">
+          <h4 class="font-semibold">Notification schedule (example)</h4>
+          <p class="text-sm text-slate-300">If you enable notifications we'll register your browser token with OneSignal and can send 3 scheduled notifications: <strong>24 hours before</strong>, <strong>1 hour before</strong>, and <strong>at launch</strong>. You can also tag interests for targeted campaigns.</p>
         </div>
       </div>
 
-      <div class="panel" aria-hidden="true">
-        <div class="logo-wrap" id="logoWrap" aria-hidden="true">
-          <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Helalink logo">
+      <div class="rocket-viewport relative glass p-6" aria-hidden="true">
+        <div class="stars layer1"></div>
+        <div class="stars layer2"></div>
+        <div class="stars layer3"></div>
+
+        <div class="rocket-center" style="position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);z-index:20;pointer-events:none">
+          <!-- Rocket SVG (kept simple for clarity) -->
+          <svg class="rocket-svg" viewBox="0 0 120 240" xmlns="http://www.w3.org/2000/svg" width="220" aria-hidden="true">
             <defs>
-              <linearGradient id="rainbow" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#ff0057" />
-                <stop offset="16%" stop-color="#ff7a00" />
-                <stop offset="33%" stop-color="#ffd400" />
-                <stop offset="50%" stop-color="#2be2a5" />
-                <stop offset="66%" stop-color="#00c6ff" />
-                <stop offset="83%" stop-color="#9b6bff" />
-                <stop offset="100%" stop-color="#ff0057" />
-              </linearGradient>
+              <linearGradient id="rb2" x1="0" x2="1"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient>
             </defs>
-            <g transform="translate(100,100)">
-              <circle r="78" fill="rgba(255,255,255,0.02)" stroke="url(#rainbow)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+            <g>
+              <path d="M60 14 C74 40 78 84 78 114 L42 114 C42 84 46 40 60 14Z" fill="url(#rb2)" stroke="#ffffff14" stroke-width="1"/>
+              <rect x="44" y="114" width="32" height="46" rx="8" fill="#ffffff09"/>
+              <circle cx="60" cy="64" r="12" fill="#020316" stroke="#c7d2fe" stroke-width="1"/>
+              <g id="flame">
+                <path d="M60 158 C54 182 54 210 60 226 C66 210 66 182 60 158Z" fill="#fb923c"/>
+                <path d="M60 170 C56 188 56 200 60 212 C64 200 64 188 60 170Z" fill="#ef4444"/>
+              </g>
+              <text x="60" y="58" text-anchor="middle" style="font-family:'Space Grotesk',Inter,system-ui;fill:#ffffffcc;font-weight:700;font-size:10px;letter-spacing:2px">HELALINK</text>
             </g>
           </svg>
+        </div>
 
-          <div class="coin-stage" aria-hidden="true"></div>
+        <div class="absolute left-4 bottom-4 p-3 rounded-lg bg-white/3 text-sm font-semibold">Preparing for Liftoff • 13 Sep 2025 • 2:00 PM EAT</div>
+      </div>
+    </section>
 
-          <div class="logo-center">
-            <div class="logo-title">HELALINK</div>
-            <div class="logo-sub">Launching Sept 13</div>
+    <!-- Ways of earning -->
+    <section id="earn" class="mt-12">
+      <h2 class="text-2xl md:text-3xl font-bold mb-6">Ways of earning <span class="rainbow">HELALINK Agencies — drop incoming</span></h2>
+
+      <div class="grid md:grid-cols-3 gap-4" id="earnGrid">
+
+        <!-- Card 1 - Affiliate -->
+        <article class="shiny-card" data-key="affiliate" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ff7ab6, #ffcd5c, #7ef080, #66e0ff, #9b7bff);">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="earn-title rainbow font-bold text-lg">1. Multi-level Affiliate Program</h3>
+              <p class="mt-2 text-sm text-slate-200">Refer users and agencies to HELALINK and earn multi-tier commissions. Earn from direct referrals plus a percentage of activity from your network tiers.</p>
+            </div>
+            <div class="ml-2 text-xs text-slate-400">
+              <span class="interest-badge">Agencies</span>
+            </div>
           </div>
-          <div class="orbit rotate"><div class="shine" aria-hidden="true"></div></div>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20join%20HELALINK%20affiliate" target="_blank" aria-label="Join affiliate via WhatsApp">Join via WhatsApp</a>
+          </div>
+        </article>
+
+        <!-- Card 2 - Videos -->
+        <article class="shiny-card" data-key="videos" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ffd2a6,#ff9fce,#b8f2e6,#a7c7ff,#d7baff);">
+          <h3 class="earn-title rainbow font-bold text-lg">2. Watch Sponsored Videos</h3>
+          <p class="mt-2 text-sm text-slate-200">Watch short sponsored YouTube and TikTok videos, validate the views, and receive credits. Credits convert to cash or platform features like roulette.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20earn%20by%20watching%20videos" target="_blank">Start Earning</a>
+            <span class="text-xs text-slate-400">Per video payout</span>
+          </div>
+        </article>
+
+        <!-- Card 3 - Roulette -->
+        <article class="shiny-card" data-key="roulette" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ff9f9f,#ffd97a,#c6ffb3,#9fe9ff,#cfc2ff);">
+          <h3 class="earn-title rainbow font-bold text-lg">3. Roulette Casino Spin</h3>
+          <p class="mt-2 text-sm text-slate-200">Use earned credits to play the roulette. Win prizes, bonuses, and multipliers. Responsible play is enforced.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20try%20the%20roulette" target="_blank">Play via WhatsApp</a>
+            <span class="text-xs text-slate-400">Win prizes & bonuses</span>
+          </div>
+        </article>
+
+        <!-- Card 4 - Games -->
+        <article class="shiny-card" data-key="games" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ffd6f0,#fce7a9,#d6ffcf,#bfe9ff,#e6d5ff);">
+          <h3 class="earn-title rainbow font-bold text-lg">4. Online Games (Chess & Draught)</h3>
+          <p class="mt-2 text-sm text-slate-200">Compete in skill-based games with entry fees and prize pools. Join tournaments and climb leaderboards.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20join%20game%20tournaments" target="_blank">Join Tournaments</a>
+            <span class="text-xs text-slate-400">Skill-based rewards</span>
+          </div>
+        </article>
+
+        <!-- Card 5 - Ads -->
+        <article class="shiny-card" data-key="ads" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ffef9f,#ffe0a8,#bff5d0,#c9f0ff,#e8dfff);">
+          <h3 class="earn-title rainbow font-bold text-lg">5. Advertisement Clicks</h3>
+          <p class="mt-2 text-sm text-slate-200">Interact with vetted advertisers and earn for validated clicks. Ads are quality-checked and limited per user to ensure fair payouts.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20earn%20from%20ads" target="_blank">Get Started</a>
+            <span class="text-xs text-slate-400">Daily limits apply</span>
+          </div>
+        </article>
+
+        <!-- Card 6 - Forex -->
+        <article class="shiny-card" data-key="forex" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ffd4e0,#ffefb3,#d5ffd8,#d0f1ff,#e8deff);">
+          <h3 class="earn-title rainbow font-bold text-lg">6. Forex Trading</h3>
+          <p class="mt-2 text-sm text-slate-200">Access educational resources, demo accounts and partner brokers. Trade forex with optional managed accounts.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20am%20interested%20in%20forex%20trading" target="_blank">Learn More</a>
+            <span class="text-xs text-slate-400">Risk warnings shown</span>
+          </div>
+        </article>
+
+        <!-- Card 7 - AI -->
+        <article class="shiny-card" data-key="ai" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ffd9ff,#ffdcb1,#baffd8,#bfe8ff,#ded3ff);">
+          <h3 class="earn-title rainbow font-bold text-lg">7. Artificial Intelligence</h3>
+          <p class="mt-2 text-sm text-slate-200">Monetize AI tools: generate content, analyze trends, and offer automation services. Sell prompts or services via the marketplace.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20use%20AI%20tools" target="_blank">Discover AI</a>
+            <span class="text-xs text-slate-400">Create & sell</span>
+          </div>
+        </article>
+
+        <!-- Card 8 - NFTs / Metaverse -->
+        <article class="shiny-card" data-key="nft" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ffdfaa,#ffd2f0,#c8ffd3,#ccecff,#eadbff);">
+          <h3 class="earn-title rainbow font-bold text-lg">8. Digital Art Marketplace & Virtual Real Estate</h3>
+          <p class="mt-2 text-sm text-slate-200">Create, list and sell digital art and trade virtual real estate. Earn royalties and trade properties on curated drops and auctions.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20sell%20digital%20art" target="_blank">Start Selling</a>
+            <span class="text-xs text-slate-400">Royalties enabled</span>
+          </div>
+        </article>
+
+        <!-- Card 9 - Blogging -->
+        <article class="shiny-card" data-key="writing" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ffd9b3,#ffe8c6,#cfffda,#cfe9ff,#e7d6ff);">
+          <h3 class="earn-title rainbow font-bold text-lg">9. Blogging / Articles Writing</h3>
+          <p class="mt-2 text-sm text-slate-200">Publish content and earn per view, ad-share, or sponsored assignments. Top authors receive editorial boosts and monetization perks.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20write%20for%20HELALINK" target="_blank">Apply as Writer</a>
+            <span class="text-xs text-slate-400">Editorial benefits</span>
+          </div>
+        </article>
+
+        <!-- Card 10 - Gifts -->
+        <article class="shiny-card" data-key="gifts" role="button" tabindex="0" aria-pressed="false" style="--g: conic-gradient(#ffd6d6,#fff3b0,#c8ffda,#bfeaff,#e6d7ff);">
+          <h3 class="earn-title rainbow font-bold text-lg">10. Surprise Gifts & Offers</h3>
+          <p class="mt-2 text-sm text-slate-200">Early members receive giveaways, seasonal bonuses and exclusive offers. Claim rewards from the dashboard or via WhatsApp for priority handling.</p>
+          <div class="mt-3 flex items-center justify-between">
+            <a class="px-3 py-2 rounded-lg bg-white/6 text-sm" href="https://wa.me/254717028877?text=I%20want%20to%20claim%20offers" target="_blank">Claim Offers</a>
+            <span class="text-xs text-slate-400">Exclusive drops</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Professional joiners (simulated fallback) -->
+    <section id="join" class="mt-16">
+      <div class="flex items-center justify-between">
+        <h2 class="text-2xl font-bold">Real-time Joiners</h2>
+        <div class="text-sm text-slate-400">Showing latest members from across the globe</div>
+      </div>
+
+      <div class="mt-4 grid md:grid-cols-2 gap-4">
+        <div class="glass rounded-2xl p-4">
+          <div class="grid gap-3" id="professionalFeed"></div>
+        </div>
+
+        <div class="glass rounded-2xl p-4 flex flex-col gap-3">
+          <div class="font-semibold">Members Online</div>
+          <div id="onlineList" class="flex gap-3 flex-wrap"></div>
+          <div class="mt-2 text-xs text-slate-400">Active dot shows current online presence. Timestamps are updated live.</div>
         </div>
       </div>
     </section>
 
-    <!-- Recent Members Section (unchanged) -->
-    <section class="joined-section" aria-label="Recent members">
-      <div class="live-header">
-        <h2>🎉 Recent Members Joined</h2>
-        <div class="live-status">
-          <span class="dot" aria-hidden="true"></span> <span>Live feed active now</span>
+    <!-- Footer CTA -->
+    <section class="mt-12 text-center">
+      <div class="inline-flex items-center gap-4 glass p-4 rounded-2xl">
+        <div class="text-left">
+          <div class="text-sm text-slate-400">Want priority access and launch perks?</div>
+          <div class="font-bold text-lg">Join HELALINK early via WhatsApp</div>
+        </div>
+        <div>
+          <a href="https://wa.me/254717028877?text=Hi%20HELALINK!%20I%20want%20priority%20access" target="_blank" class="px-4 py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-pink-400 text-black font-semibold">Click to Join • 0717028877</a>
         </div>
       </div>
-
-      <div class="total-counter" aria-live="polite">🔢 Total Members: <span id="totalCount">0</span></div>
-      <div class="hot-country">🌍🔥 Hottest Country Today: <span id="hotCountry">Loading...</span></div>
-
-      <div class="joined-fade" aria-live="polite">
-        <div class="member-card show" id="member1" role="article"></div>
-        <div class="member-card" id="member2" role="article"></div>
-      </div>
-
-      <div class="join-streaks">📈 <span id="joinStreak">No streak yet...</span></div>
-
-      <div class="leaderboard" aria-label="Top recent joins">
-        <h3>👥 Top 5 Recent Joins</h3>
-        <ul id="leaderboardList" role="list"></ul>
-      </div>
     </section>
+  </main>
 
-    <!-- Notification Section: Browser + Signal subscribe -->
-    <section class="notify" role="region" aria-label="Launch reminders">
-      <div class="notify-box">
-        <span class="emoji" aria-hidden="true">👉</span>
-      </div>
-      <div class="notify-cta">
-        <div class="notify-caption"><strong>Get daily launch reminders + bonus alerts — choose Signal or browser.</strong></div>
-        <div class="notify-small">We’ll nudge you every day until launch and remind you about activation so you don’t miss priority bonuses.</div>
-      </div>
-      <div style="margin-left:18px;display:flex;flex-direction:column;align-items:flex-end;gap:10px;">
-        <button id="notifyBtn" class="btn btn-join pulse" aria-label="Allow browser reminders">Browser Reminders</button>
-        <button id="signalBtn" class="btn btn-join" aria-label="Subscribe via Signal">Remind me on Signal</button>
-        <div id="subBadge" class="badge" style="display:none">Subscribed</div>
-      </div>
-    </section>
+  <!-- Floating WhatsApp FAB -->
+  <a class="fixed right-6 bottom-6 inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-400 shadow-xl" target="_blank" rel="noopener" href="https://wa.me/254717028877?text=Hi%20HELALINK!%20Add%20me%20to%20the%20waitlist." aria-label="Open WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.92 11.92 0 0 0 12.05 0C5.4 0 .03 5.36.03 12a11.9 11.9 0 0 0 1.63 6L0 24l6.16-1.61A11.95 11.95 0 0 0 12 24h.01c6.64 0 12.02-5.36 12.02-12.01 0-3.21-1.25-6.23-3.51-8.51Zm-8.5 19.05h-.01a9.9 9.9 0 0 1-5.05-1.38l-.36-.2-3.65.96.98-3.56-.24-.37a9.9 9.9 0 0 1-1.51-5.26c0-5.46 4.45-9.9 9.93-9.9 2.65 0 5.15 1.03 7.02 2.9a9.8 9.8 0 0 1 2.9 7c0 5.47-4.46 9.91-10 9.91Zm5.44-7.43c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15s-.77.97-.94 1.17-.35.22-.64.07c-.3-.15-1.26-.46-2.4-1.47-.89-.78-1.48-1.74-1.65-2.03-.17-.3-.02-.46.13-.61.14-.14.3-.37.45-.56.15-.19.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1-1.03 2.46s1.06 2.86 1.2 3.06c.15.2 2.08 3.18 5.04 4.45.7.3 1.24.48 1.66.62.7.22 1.34.19 1.85.12.56-.08 1.76-.72 2.01-1.41.25-.7.25-1.3.17-1.41-.08-.12-.27-.2-.57-.35Z"/></svg>
+  </a>
 
-    <!-- Ways of Earning (unchanged) -->
-    <section class="earning" aria-label="Ways of earning">
-      <h2 class="big-header">Ways of Earning</h2>
-      <div class="earn-grid">
-        <div class="earn-card">▶️ Watching YouTube Videos<br><span>Est: KSh 2k/day · KSh 14k/week</span></div>
-        <div class="earn-card">▶️ Watching TikTok Videos<br><span>Est: KSh 2k/day · KSh 14k/week</span></div>
-        <div class="earn-card">▶️ Watching Instagram Videos<br><span>Est: KSh 1.5k/day · KSh 10.5k/week</span></div>
-        <div class="earn-card">▶️ Clicking Netflix Ads<br><span>Est: KSh 3k/day · KSh 21k/week</span></div>
-        <div class="earn-card">🎮 Aviator (Mini-games)<br><span>Est: KSh 5k/day · KSh 35k/week (higher risk)</span></div>
-        <div class="earn-card">😂 Creating Memes<br><span>Est: KSh 2k/day · KSh 14k/week</span></div>
-        <div class="earn-card">✍️ Academic Writing<br><span>Est: KSh 7k/day · KSh 49k/week</span></div>
-        <div class="earn-card">🤝 Affiliate Marketing<br><span>Est: KSh 5k/day · KSh 35k/week</span></div>
-        <div class="earn-card">📋 Surveys<br><span>Est: KSh 1k/day · KSh 7k/week</span></div>
-        <div class="earn-card">🎁 Welcome Bonus<br><span>One-time credit: KSh 1k–5k (bonus on signup)</span></div>
-      </div>
-      <p style="text-align:center;color:rgba(255,255,255,0.7);margin-top:18px;font-size:14px">Earnings shown are estimates and depend on effort, location, and market conditions. Results may vary.</p>
-    </section>
+  <!-- Toast -->
+  <div id="toast" style="position:fixed;left:50%;transform:translateX(-50%);bottom:92px;background:#0b1220;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.05);display:none;z-index:1000;color:#e6eef8"></div>
 
-    <!-- Bots (unchanged) -->
-    <section class="bots" aria-label="Bots">
-      <h2 class="big-header">🤖 Smart Bots to Guide You</h2>
-
-      <div class="bot">
-        <button class="bot-q" aria-expanded="false" aria-controls="bot-1">💪 Motivation Bot: Why start an online business?</button>
-        <div id="bot-1" class="bot-a" role="region" aria-hidden="true">Financial freedom starts with small consistent steps. Helalink pairs training + small tasks so you earn while learning.<div class="bot-actions"><button class="btn-ghost" data-wa-message="I'm%20interested%20in%20joining%20-%20tell%20me%20about%20bonuses">Join via WhatsApp</button><button class="btn-ghost" data-action="more">Tell me more</button></div></div>
-      </div>
-
-      <div class="bot">
-        <button class="bot-q" aria-expanded="false" aria-controls="bot-2">📚 Training Bot: How will I learn?</button>
-        <div id="bot-2" class="bot-a" role="region" aria-hidden="true">We provide step-by-step lessons, short videos, and practice tasks. Newcomers get priority coaching during launch.<div class="bot-actions"><button class="btn-ghost" data-wa-message="How%20do%20I%20start%20the%20training%20for%20Helalink%3F">Start Training (WhatsApp)</button><button class="btn-ghost" data-action="curriculum">See curriculum</button></div></div>
-      </div>
-
-      <div class="bot">
-        <button class="bot-q" aria-expanded="false" aria-controls="bot-3">🛠 Onboarding Bot: Why pay activation fee?</button>
-        <div id="bot-3" class="bot-a" role="region" aria-hidden="true">Activation fees cover onboarding, verification & bonus pools. Think of it as capital to kickstart your micro-business. <div class="bot-actions"><button class="btn-ghost" data-wa-message="I%20want%20to%20pay%20the%20activation%20fee%20-%20how%20do%20I%20proceed%3F">Pay/Ask on WhatsApp</button></div></div>
-      </div>
-
-      <div class="bot">
-        <button class="bot-q" aria-expanded="false" aria-controls="bot-4">🤔 Where can I get more information?</button>
-        <div id="bot-4" class="bot-a" role="region" aria-hidden="true">You can get more information about the business through our official channel. <div class="bot-actions"><button class="btn-ghost" data-wa-message="https://whatsapp.com/channel/0029VbBTufM4dTnJSyzvxg1V">Follow our channel (WhatsApp)</button></div></div>
-      </div>
-
-      <div class="bot">
-        <button class="bot-q" aria-expanded="false" aria-controls="bot-5">🤝 Support Bot: Do I need an account?</button>
-        <div id="bot-5" class="bot-a" role="region" aria-hidden="true">Yes — accounts secure your earnings, track affiliate activity and enable payouts. Creating an account is quick and free (fee applies to activation).<div class="bot-actions"><button class="btn-ghost" data-wa-message="I%20want%20to%20create%20an%20account%20-%20what%20do%20I%20need%3F">Create account (WhatsApp)</button></div></div>
-      </div>
-    </section>
-
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-    <footer>© 2025 Helalink • Launching September 13 • Early access via WhatsApp & Signal</footer>
-  </div>
+  <!-- OneSignal SDK (client) -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 
   <script>
-    /******************************************************************
-     * Helpers
-     ******************************************************************/
-    function openWhatsApp(message){
-      const phone = '254717028877';
-      const msg = message || 'Hi! I want to join Helalink.';
-      const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
+    /************************************************************
+     * HELALINK Landing Page - OneSignal + interest tags
+     * - Initializes OneSignal with the provided App ID
+     * - Lets users toggle interests (10 earning cards)
+     * - Stores interest selections in localStorage so tags can be sent when user subscribes
+     * - Sends tags to OneSignal when subscription is confirmed or when toggles change after subscribing
+     *
+     * IMPORTANT:
+     * - Do NOT put your OneSignal REST API Key into client-side code.
+     * - The server-side REST key is used only for sending notifications from your backend.
+     ************************************************************/
+
+    // ---- Basic UI helpers ----
+    function showToast(msg, ms = 3500) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.style.display = 'block';
+      clearTimeout(t._hideTimeout);
+      t._hideTimeout = setTimeout(()=> t.style.display = 'none', ms);
     }
-    function openSignal(){
-      const phone = '+254717028877';
-      const url = `https://signal.me/#p/${phone}`;
-      window.open(url, '_blank', 'noopener,noreferrer');
+
+    // Typing + countdown (client)
+    const typeEl = document.getElementById('type');
+    const phrases = ['Online Business Platform','Set New Records in Networking 🎊','HELALINK Agencies dropping soon ♦️','Launch: 13 Sep 2025 • 2PM EAT'];
+    let pi=0, ci=0, deleting=false;
+    function tick(){ const full=phrases[pi]; if(!deleting) ci++; else ci--; typeEl.textContent=full.slice(0,ci); if(!deleting && ci===full.length){deleting=true; setTimeout(tick,1200); return} if(deleting && ci===0){deleting=false; pi=(pi+1)%phrases.length} setTimeout(tick, deleting?40:70);} tick();
+
+    const cd = document.getElementById('countdown');
+    const launchDate = new Date('2025-09-13T11:00:00Z'); // 14:00 EAT
+    function updateCountdown(){ const now=new Date(); let diff=Math.max(0, launchDate - now); const d=Math.floor(diff/86400000); diff -= d*86400000; const h=Math.floor(diff/3600000); diff -= h*3600000; const m=Math.floor(diff/60000); diff -= m*60000; const s=Math.floor(diff/1000); cd.textContent = `${d}d ${h}h ${m}m ${s}s`; }
+    updateCountdown(); setInterval(updateCountdown,1000);
+
+    // simulated joiners (keeps your existing behaviour)
+    const professionalFeed = document.getElementById('professionalFeed');
+    const onlineList = document.getElementById('onlineList');
+    const names = ['Amina','Jayden','Fatma','Olu','Grace','Rashid','Ivy','Zara','Kofi','Liam','Tariq','Mira','Noah','Leah','Kwame','Nadia','Yusuf','Aaliyah'];
+    const countries = [{c:'Kenya',f:'🇰🇪'},{c:'Tanzania',f:'🇹🇿'},{c:'Uganda',f:'🇺🇬'},{c:'Nigeria',f:'🇳🇬'},{c:'Ghana',f:'🇬🇭'},{c:'Rwanda',f:'🇷🇼'},{c:'Ethiopia',f:'🇪🇹'},{c:'South Africa',f:'🇿🇦'},{c:'Egypt',f:'🇪🇬'},{c:'UAE',f:'🇦🇪'},{c:'India',f:'🇮🇳'}];
+    function avatar(seed){ return `https://api.dicebear.com/8.x/thumbs/svg?seed=${encodeURIComponent(seed)}&backgroundType=gradientLinear&radius=50`; }
+    function timeAgo(date){ const s=Math.floor((Date.now()-date)/1000); if(s<5) return 'just now'; if(s<60) return `${s}s ago`; const m=Math.floor(s/60); if(m<60) return `${m}m ago`; const h=Math.floor(m/60); return `${h}h ago`; }
+    function createProfessionalEntry({name,country,flag,joined}) {
+      const wrapper = document.createElement('div'); wrapper.className='joiner-card';
+      wrapper.innerHTML = `
+        <img src="${avatar(name+country)}" alt="${name}" class="w-12 h-12 rounded-full" />
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between">
+            <div class="truncate">
+              <div class="font-semibold">${name}</div>
+              <div class="text-xs text-slate-400">${flag} ${country} • New member</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-slate-400">${timeAgo(joined)}</div>
+              <div class="dot-pulse mt-2"><span class="active-dot" style="display:inline-block;width:10px;height:10px;border-radius:999px;background:#22c55e"></span></div>
+            </div>
+          </div>
+          <div class="mt-2 text-xs text-slate-400">Joined via WhatsApp • ${new Date(joined).toLocaleString()}</div>
+        </div>
+      `;
+      return wrapper;
     }
-    function showToast(msg, ms = 4200){
-      const el = document.getElementById('toast');
-      el.textContent = msg;
-      el.style.display = 'block';
-      clearTimeout(el._t);
-      el._t = setTimeout(()=>{ el.style.display='none'; }, ms);
+    function addLocalProfessional(){
+      const name = names[Math.floor(Math.random()*names.length)];
+      const cc = countries[Math.floor(Math.random()*countries.length)];
+      const joined = Date.now();
+      const entry = createProfessionalEntry({name,country:cc.c,flag:cc.f,joined});
+      professionalFeed.prepend(entry);
+      while(professionalFeed.children.length>8) professionalFeed.lastElementChild.remove();
+
+      const onlineChip = document.createElement('div'); onlineChip.className='flex items-center gap-2 p-1 rounded-full bg-white/3';
+      onlineChip.innerHTML = `<img src="${avatar(name+cc.c)}" class="w-8 h-8 rounded-full"/><div class="text-xs font-medium">${name}</div>`;
+      onlineList.prepend(onlineChip);
+      while(onlineList.children.length>12) onlineList.lastElementChild.remove();
+    }
+    for(let i=0;i<5;i++){ addLocalProfessional(); }
+    setInterval(addLocalProfessional, 4200 + Math.random()*3000);
+
+    // ---- Interest toggles + local persistence ----
+    const selectedInterests = new Set(JSON.parse(localStorage.getItem('hl_interests') || '[]'));
+    const cards = document.querySelectorAll('.shiny-card[data-key]');
+
+    function refreshUIFromInterests() {
+      cards.forEach(card=>{
+        const key = card.getAttribute('data-key');
+        const is = selectedInterests.has(key);
+        card.classList.toggle('selected', is);
+        card.setAttribute('aria-pressed', is ? 'true' : 'false');
+      });
+    }
+    refreshUIFromInterests();
+
+    function persistInterests() {
+      localStorage.setItem('hl_interests', JSON.stringify(Array.from(selectedInterests)));
     }
 
-    /******************************************************************
-     * DOM ready
-     ******************************************************************/
-    document.addEventListener('DOMContentLoaded', ()=>{
-
-      /***** Typing effect (unchanged) *****/
-      const typingEl = document.getElementById('typingText');
-      const typingPhrases = [
-        'HELALINK — coming soon. Book your slot on WhatsApp',
-        'Priority onboarding • Launch bonuses • Real earning methods',
-        'Join early — limited priority seats'
-      ];
-      let tpIndex = 0, tpChar = 0, tpForward = true;
-      const tpSpeed = 60;
-      function typingLoop(){
-        const txt = typingPhrases[tpIndex];
-        if(tpForward){
-          tpChar++;
-          if(tpChar >= txt.length) { tpForward = false; setTimeout(typingLoop, 1200); return; }
-        } else {
-          tpChar--;
-          if(tpChar <= 0){ tpForward = true; tpIndex = (tpIndex+1)%typingPhrases.length; setTimeout(typingLoop, 300); return; }
+    // Wire toggles: accessible clicks + keyboard
+    cards.forEach(card => {
+      const key = card.getAttribute('data-key');
+      const toggle = async () => {
+        const was = selectedInterests.has(key);
+        if (was) selectedInterests.delete(key); else selectedInterests.add(key);
+        persistInterests();
+        refreshUIFromInterests();
+        // If already subscribed to OneSignal, send immediate tag update
+        if (window.OneSignalInstance && typeof window.OneSignalInstance.sendTags === 'function') {
+          const tags = {};
+          tags['interest_' + key] = selectedInterests.has(key) ? '1' : '0';
+          try { await window.OneSignalInstance.sendTags(tags); } catch(e){ console.warn('sendTags error', e); }
         }
-        typingEl.textContent = txt.slice(0,tpChar);
-        setTimeout(typingLoop, tpForward ? tpSpeed : 30);
-      }
-      typingLoop();
+      };
+      card.addEventListener('click', (e)=>{ if((e.target.tagName||'').toLowerCase() === 'a') return; toggle(); });
+      card.addEventListener('keydown', (e)=>{ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
+    });
 
-      /***** Countdown to Sept 13, 2025 (unchanged) *****/
-      const d = document.getElementById('d'), h = document.getElementById('h'), m = document.getElementById('m'), s = document.getElementById('s');
-      const launch = new Date('2025-09-13T00:00:00');
-      function tick(){
-        const now = new Date();
-        let diff = launch - now;
-        if(diff <= 0){ d.textContent=h.textContent=m.textContent=s.textContent='00'; return; }
-        const days = Math.floor(diff/(1000*60*60*24)); diff%= (1000*60*60*24);
-        const hours= Math.floor(diff/(1000*60*60)); diff%= (1000*60*60);
-        const mins = Math.floor(diff/(1000*60)); diff%= (1000*60);
-        const secs = Math.floor(diff/1000);
-        d.textContent = String(days).padStart(2,'0');
-        h.textContent = String(hours).padStart(2,'0');
-        m.textContent = String(mins).padStart(2,'0');
-        s.textContent = String(secs).padStart(2,'0');
-      }
-      tick(); setInterval(tick,1000);
+    // ---- OneSignal client setup ----
+    // Your OneSignal App ID (used on the client). This is safe to include in front-end.
+    const ONESIGNAL_APP_ID = "7812cafe-fa18-4b12-ac47-f95f2ce4077f";
 
-      /***** Background canvas, coins, live demo, bots, leaderboard, join buttons, etc. *****/
-      // Full JS for these features is unchanged from the previous working file.
-      // For brevity this block contains the same functions (particles, createMoney, liveDemo, accordions).
-      // (Everything from the earlier delivered full file remains the same here.)
-      // ---------- Insert the full previously provided JS for these pieces below ----------
-      // We'll keep the coin/particle/live members/accordion scripts exactly as before:
-      (function initVisualsAndLiveDemo(){
-        // Background canvas
-        const bg = document.getElementById('bgCanvas');
-        const g = bg.getContext && bg.getContext('2d');
-        function resizeCanvas(){ if(!g) return; bg.width = window.innerWidth; bg.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas); resizeCanvas();
-        const particleCount = window.innerWidth < 700 ? 60 : 140;
-        let particles = [];
-        if(g){
-          particles = Array.from({length: particleCount}, ()=>({x:Math.random()*bg.width,y:Math.random()*bg.height,r:Math.random()*1.6+0.4,vx:(Math.random()-0.5)*0.28,vy:(Math.random()-0.5)*0.28}));
-          let t=0;
-          (function draw(){
-            g.clearRect(0,0,bg.width,bg.height);
-            const grad = g.createLinearGradient(0,0,bg.width,bg.height);
-            grad.addColorStop(0,'rgba(5,6,22,0.92)'); grad.addColorStop(1,'rgba(5,12,34,0.92)');
-            g.fillStyle = grad; g.fillRect(0,0,bg.width,bg.height);
-            for(let j=0;j<3;j++){
-              g.beginPath();
-              const amp = 18 + j*16; const freq = 0.0022 + j*0.0012;
-              g.moveTo(0,bg.height/2);
-              for(let x=0;x<bg.width;x+=10){
-                const y = bg.height/2 + Math.sin((x*freq)+t*0.002+j)*amp + j*18;
-                g.lineTo(x,y);
-              }
-              g.lineTo(bg.width,bg.height); g.lineTo(0,bg.height);
-              g.fillStyle = `rgba(${40+j*35},${60+j*40},${120+j*30},0.055)`; g.fill();
-            }
-            particles.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; if(p.x<0)p.x=bg.width; if(p.x>bg.width)p.x=0; if(p.y<0)p.y=bg.height; if(p.y>bg.height)p.y=0; g.beginPath(); g.arc(p.x,p.y,p.r,0,Math.PI*2); g.fillStyle='rgba(255,255,255,0.06)'; g.fill(); });
-            t++; requestAnimationFrame(draw);
-          })();
-        }
-
-        // Coins
-        const coinStage = document.querySelector('.coin-stage');
-        function createMoney(){
-          if(!coinStage) return;
-          const isNote = Math.random() > 0.5;
-          const el = document.createElement('div');
-          el.className = 'money' + (isNote ? ' note' : '');
-          const lbl = document.createElement('div'); lbl.className='label';
-          lbl.textContent = isNote ? 'KSh' : '';
-          el.appendChild(lbl);
-          const W = coinStage.clientWidth || 220; const left = Math.random() * (W - 40);
-          el.style.left = left + 'px';
-          const dx = (Math.random()*120 - 60).toFixed(0) + 'px';
-          el.style.setProperty('--dx', dx);
-          const dur = 1800 + Math.random()*2600;
-          el.style.animation = `fall ${dur}ms cubic-bezier(.2,.9,.2,1)`;
-          coinStage.appendChild(el);
-          el.addEventListener('animationend', ()=> el.remove());
-        }
-        function createBurst(n){ for(let i=0;i<n;i++){ setTimeout(createMoney, i*60 + Math.random()*120); } }
-        const coinInterval = window.innerWidth < 700 ? 1100 : 700;
-        setInterval(()=>{ createMoney(); }, coinInterval);
-        const logoWrap = document.getElementById('logoWrap'); if(logoWrap) logoWrap.addEventListener('mouseenter', ()=>{ createBurst(6); });
-
-        // Accordion (bots)
-        document.querySelectorAll('.bot-q').forEach(btn=>{
-          btn.addEventListener('click', ()=>{
-            const panelId = btn.getAttribute('aria-controls');
-            const ans = document.getElementById(panelId);
-            const expanded = btn.getAttribute('aria-expanded') === 'true';
-            document.querySelectorAll('.bot-q').forEach(b=>{ b.setAttribute('aria-expanded','false'); const p = document.getElementById(b.getAttribute('aria-controls')); if(p){ p.style.display='none'; p.setAttribute('aria-hidden','true'); } });
-            btn.setAttribute('aria-expanded', String(!expanded));
-            if(ans){ ans.style.display = expanded ? 'none' : 'block'; ans.setAttribute('aria-hidden', String(expanded)); }
-            if(!expanded){ showToast('Tip: Use the WhatsApp buttons inside answers to join quickly'); }
-          });
+    // Queue functions to run after SDK loads
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      try {
+        await OneSignal.init({
+          appId: ONESIGNAL_APP_ID,
+          allowLocalhostAsSecureOrigin: true, // helpful when testing on localhost
+          welcomeNotification: { title: "HELALINK", message: "Thanks for enabling HELALINK notifications!" }
         });
 
-        // Bot action buttons
-        document.querySelectorAll('.bot-actions').forEach(group=>{
-          group.addEventListener('click', (e)=>{
-            const t = e.target;
-            if(t.matches('[data-wa-message]')){
-              const raw = t.getAttribute('data-wa-message');
-              if(raw && (raw.startsWith('http://') || raw.startsWith('https://'))){
-                window.open(raw, '_blank', 'noopener,noreferrer');
-              } else {
-                const msg = raw ? decodeURIComponent(raw) : 'Hi, I want to join Helalink.';
-                createBurst(8); openWhatsApp(msg);
-              }
-            } else if(t.matches('[data-action]')){
-              const a = t.getAttribute('data-action');
-              if(a === 'more') showToast('We match weekly goals with rewards — check updates in WhatsApp.');
-              if(a === 'curriculum') showToast('Curriculum: Basics → Tasks → Scaling → Referral growth.');
-            }
-          });
-        });
+        // Save reference for use elsewhere
+        window.OneSignalInstance = OneSignal;
 
-        // Live demo & leaderboard
-        (function liveDemo(){
-          const countries = [
-            { name: "Ghana", flag: "🇬🇭" },
-            { name: "Kenya", flag: "🇰🇪" },
-            { name: "Uganda", flag: "🇺🇬" },
-            { name: "Botswana", flag: "🇧🇼" },
-            { name: "Malawi", flag: "🇲🇼" },
-            { name: "Cameroon", flag: "🇨🇲" }
-          ];
-          function generateId() { return "******" + Math.floor(1000 + Math.random() * 9000); }
-          function getTimeAgo(i) { if (i === 0) return "just now"; return i + " min ago"; }
-          const members = [];
-          for (let i = 0; i < 50; i++) {
-            const c = countries[Math.floor(Math.random() * countries.length)];
-            members.push({
-              id: generateId(),
-              country: c.name,
-              flag: c.flag,
-              avatar: `https://i.pravatar.cc/150?img=${Math.floor(Math.random() * 70)}`,
-              time: getTimeAgo(Math.floor(Math.random() * 10))
+        // If user already subscribed, ensure tags are synced
+        try {
+          const isEnabled = await OneSignal.isPushNotificationsEnabled();
+          if (isEnabled) {
+            // mark local state
+            localStorage.setItem('hl_subscribed', '1');
+            // push baseline tags + interest tags
+            const tagObj = { helalink_subscribed: '1', signup_source: 'web-landing' };
+            const stored = JSON.parse(localStorage.getItem('hl_interests') || '[]');
+            // set all interest tags to 0 or 1 so targeting is explicit
+            document.querySelectorAll('.shiny-card[data-key]').forEach(card=>{
+              const k = card.getAttribute('data-key');
+              tagObj['interest_' + k] = stored.includes(k) ? '1' : '0';
             });
+            await OneSignal.sendTags(tagObj);
           }
-          let index = 0;
-          let active = 1;
-          let totalCount = 0;
-          let countryCounts = {};
-          let recentJoins = [];
+        } catch(e) { console.warn('isPushNotificationsEnabled check error', e); }
 
-          const member1 = document.getElementById("member1");
-          const member2 = document.getElementById("member2");
-          const leaderboardList = document.getElementById("leaderboardList");
-          const totalCountEl = document.getElementById("totalCount");
-          const hotCountryEl = document.getElementById("hotCountry");
-          const joinStreakEl = document.getElementById("joinStreak");
-
-          document.querySelectorAll(".member-card").forEach(el => {
-            el.style.setProperty("--fade-time", "2s");
-          });
-
-          function renderMember(el, data) {
-            el.innerHTML = `
-              <img src="${data.avatar}" alt="avatar" style="width:40px;height:40px;border-radius:50%;border:2px solid white">
-              <span>${data.id} from ${data.country} ${data.flag} <small style="font-weight:400;margin-left:8px">(${data.time})</small></span>
-            `;
-          }
-
-          renderMember(member1, members[index]);
-          member1.classList.add("show");
-
-          function updateStats(data) {
-            totalCount++;
-            totalCountEl.textContent = totalCount;
-
-            countryCounts[data.country] = (countryCounts[data.country] || 0) + 1;
-            const hottest = Object.entries(countryCounts).sort((a,b) => b[1]-a[1])[0];
-            if(hottest) {
-              const found = countries.find(c=> c.name === hottest[0]);
-              hotCountryEl.textContent = hottest[0] + (found ? " " + found.flag : "");
-            }
-
-            recentJoins.push(data.country);
-            if (recentJoins.length > 5) recentJoins.shift();
-            const streakCountry = recentJoins[0];
-            const streakCount = recentJoins.filter(c => c === streakCountry).length;
-            joinStreakEl.textContent = streakCount > 1 ?
-              `${streakCount} people from ${streakCountry} joined recently!` :
-              `Last join: ${data.country}`;
-          }
-
-          function showNextMember() {
-            index = (index + 1) % members.length;
-            const nextData = members[index];
-
-            if (active === 1) {
-              renderMember(member2, nextData);
-              member2.classList.add("show");
-              member1.classList.remove("show");
-              active = 2;
+        // subscription change listener
+        if (OneSignal.on) {
+          OneSignal.on('subscriptionChange', async function(isSubscribed) {
+            if (isSubscribed) {
+              localStorage.setItem('hl_subscribed', '1');
+              // prepare tags: baseline + interest tags
+              const tags = { helalink_subscribed: '1', signup_source: 'web-landing' };
+              const stored = JSON.parse(localStorage.getItem('hl_interests') || '[]');
+              document.querySelectorAll('.shiny-card[data-key]').forEach(card=>{
+                const k = card.getAttribute('data-key');
+                tags['interest_' + k] = stored.includes(k) ? '1' : '0';
+              });
+              try {
+                await OneSignal.sendTags(tags);
+                showToast('Notifications enabled ✅');
+              } catch(e) {
+                console.warn('sendTags on subscription error', e);
+                showToast('Subscribed — but failed to sync tags.');
+              }
             } else {
-              renderMember(member1, nextData);
-              member1.classList.add("show");
-              member2.classList.remove("show");
-              active = 1;
+              localStorage.removeItem('hl_subscribed');
+              showToast('Notifications disabled or blocked.');
             }
-
-            const li = document.createElement("li");
-            li.innerHTML = `
-              <img src="${nextData.avatar}" alt="avatar">
-              ${nextData.id} - ${nextData.flag} ${nextData.country} <small style="margin-left:auto;font-weight:400">(${nextData.time})</small>
-            `;
-            leaderboardList.insertBefore(li, leaderboardList.firstChild);
-            while (leaderboardList.children.length > 5) {
-              leaderboardList.removeChild(leaderboardList.lastChild);
-            }
-
-            updateStats(nextData);
-          }
-
-          setInterval(showNextMember, (8 + 2) * 1000);
-        })();
-
-        // Join CTA
-        const joinBtn = document.getElementById('joinBtn');
-        if(joinBtn){
-          joinBtn.addEventListener('click', ()=>{
-            createBurst(18);
-            openWhatsApp('Hi! Please keep my spot ready, I will join on 13 September.');
           });
         }
 
-        // generic join-btn (whatsapp/signal)
-        document.querySelectorAll('.join-btn').forEach(btn=>{
-          btn.addEventListener('click', ()=>{
-            const action = btn.dataset.action;
-            if(action === 'whatsapp') openWhatsApp();
-            else if(action === 'signal') openSignal();
-          });
-        });
-
-      })(); // end visuals/liveDemo init
-
-      /***** Signal subscribe button *****/
-      const signalBtn = document.getElementById('signalBtn');
-      if(signalBtn){
-        signalBtn.addEventListener('click', ()=>{
-          openSignal();
-          try { localStorage.setItem('helalink_signal_sub', 'requested'); } catch(e){}
-          document.getElementById('subBadge').style.display = 'inline-block';
-          showToast("Opened Signal — send the message to subscribe and we'll add you to reminders.");
-        });
+      } catch (errInit) {
+        console.warn('OneSignal init failed', errInit);
       }
+    });
 
-      /***** OneSignal: Browser Reminders button wiring  *****/
-      const notifyBtn = document.getElementById('notifyBtn');
-      if(notifyBtn){
-        notifyBtn.addEventListener('click', ()=>{
-          // Ensure OneSignal SDK is ready
-          if(!window.OneSignal){
-            showToast('Notification service not loaded yet — try again in a moment.');
-            return;
-          }
+    // Handle the "Enable Notifications" button -> show prompt
+    document.getElementById('notifyBtn').addEventListener('click', async () => {
+      try {
+        // Wait for SDK to be loaded and OneSignalInstance to exist (if not, user loaded early)
+        const waitForOneSignal = () => new Promise((resolve) => {
+          const max = 8000; let waited = 0;
+          const iv = setInterval(()=> {
+            if (window.OneSignalInstance) { clearInterval(iv); resolve(true); }
+            waited += 200;
+            if (waited >= max) { clearInterval(iv); resolve(false); }
+          }, 200);
+        });
+        const ok = await waitForOneSignal();
+        if (!ok) {
+          showToast('Notification system not loaded yet. Try again in a moment.');
+          return;
+        }
 
-          // Use OneSignal API via the push queue
-          OneSignal.push(async function() {
-            try {
-              // check if user is already subscribed
-              const isEnabled = await OneSignal.isPushNotificationsEnabled();
-              if(isEnabled) {
-                document.getElementById('subBadge').style.display = 'inline-block';
-                showToast('You are already subscribed ✅');
-                return;
-              }
+        const OneSignal = window.OneSignalInstance;
 
-              // Request permission & show native browser prompt
-              // requestPermission() may prompt; on success, OneSignal will subscribe the user
-              const permissionResult = await OneSignal.requestPermission();
-              // After requesting, check final state
-              const nowEnabled = await OneSignal.isPushNotificationsEnabled();
-              if(nowEnabled){
-                document.getElementById('subBadge').style.display = 'inline-block';
-                showToast('Subscribed to browser reminders ✅');
-              } else {
-                // If user denied or didn't grant, give feedback
-                showToast('Notifications not enabled (permission blocked or dismissed).');
-              }
-            } catch (err) {
-              console.error('OneSignal subscribe error', err);
-              showToast('Could not subscribe to notifications. Check console.');
+        // Check if push is supported
+        let supported = true;
+        try {
+          if (typeof OneSignal.isPushNotificationsSupported === 'function') supported = await OneSignal.isPushNotificationsSupported();
+        } catch(e){ supported = true; }
+
+        if (!supported) {
+          alert('Push notifications are not supported on this browser.');
+          return;
+        }
+
+        // Prefer native prompt if available
+        try {
+          if (typeof OneSignal.showNativePrompt === 'function') {
+            await OneSignal.showNativePrompt();
+          } else if (typeof OneSignal.showSlidedownPrompt === 'function') {
+            await OneSignal.showSlidedownPrompt();
+          } else if (typeof OneSignal.registerForPushNotifications === 'function') {
+            await OneSignal.registerForPushNotifications();
+          } else {
+            // fallback: ask for permission via Notification API, then subscribe via OneSignal if granted
+            const p = await Notification.requestPermission();
+            if (p !== 'granted') {
+              showToast('Permission not granted.');
+              return;
             }
-          });
-        });
+          }
+        } catch (e) {
+          console.warn('Prompt method failed, falling back.', e);
+          try { await Notification.requestPermission(); } catch{}
+        }
+      } catch (err) {
+        console.error('notifyBtn error', err);
+        showToast('Could not show permission prompt. Check console.');
       }
+    });
 
-    }); // DOMContentLoaded
+    // If the user toggles interests prior to subscribing, we send tags post-subscription in subscriptionChange handler.
+    // Also keep tags in sync if user toggles interests after subscription (handled in toggle code above).
+
+    // Accessibility: allow keyboard focus outline for cards
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Tab') document.body.classList.add('user-tabbing');
+    });
+
   </script>
 </body>
 </html>
